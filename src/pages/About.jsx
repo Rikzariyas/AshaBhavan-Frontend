@@ -3,8 +3,7 @@ import { Target, Eye, CheckCircle } from 'lucide-react'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function About() {
- 
-  const displayAboutData =  DUMMY_DATA.ABOUT
+  const displayAboutData = DUMMY_DATA.ABOUT
 
   return (
     <div className="pt-20 min-h-screen">

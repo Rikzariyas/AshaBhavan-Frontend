@@ -13,13 +13,13 @@ export default function AdminDashboard() {
     headOfInstitute,
     aboutData,
     gallery,
-    faculties,
+    courses,
     contactInfo,
     updateSliderImages,
     updateHeadOfInstitute,
     updateAboutData,
     updateGallery,
-    updateFaculties,
+    updateCourses,
     updateContactInfo,
   } = useStore()
 
@@ -29,7 +29,7 @@ export default function AdminDashboard() {
     headOfInstitute,
     aboutData,
     gallery,
-    faculties,
+    courses,
     contactInfo,
   })
 
@@ -48,7 +48,7 @@ export default function AdminDashboard() {
     updateHeadOfInstitute(localData.headOfInstitute)
     updateAboutData(localData.aboutData)
     updateGallery(localData.gallery)
-    updateFaculties(localData.faculties)
+    updateCourses(localData.courses)
     updateContactInfo(localData.contactInfo)
     alert('Changes saved successfully!')
   }
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'gallery', label: 'Gallery' },
-    { id: 'faculties', label: 'Faculties' },
+    { id: 'courses', label: 'Courses' },
     { id: 'contact', label: 'Contact' },
   ]
 
@@ -315,24 +315,24 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {activeTab === 'faculties' && (
+          {activeTab === 'courses' && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Faculties Settings</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Courses Settings</h2>
               <div className="space-y-4">
-                {localData.faculties.map((faculty, index) => (
-                  <div key={faculty.id} className="border border-gray-200 rounded-lg p-4">
+                {localData.courses.map((course, index) => (
+                  <div key={course.id} className="border border-gray-200 rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Course Name</label>
                         <input
                           type="text"
-                          value={faculty.name}
+                          value={course.name}
                           onChange={(e) => {
-                            const newFaculties = [...localData.faculties]
-                            newFaculties[index] = { ...faculty, name: e.target.value }
-                            setLocalData({ ...localData, faculties: newFaculties })
+                            const newCourses = [...localData.courses]
+                            newCourses[index] = { ...course, name: e.target.value }
+                            setLocalData({ ...localData, courses: newCourses })
                           }}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green outline-none"
                         />
                       </div>
                       <div>
@@ -341,13 +341,13 @@ export default function AdminDashboard() {
                         </label>
                         <input
                           type="text"
-                          value={faculty.subject}
+                          value={course.subject}
                           onChange={(e) => {
-                            const newFaculties = [...localData.faculties]
-                            newFaculties[index] = { ...faculty, subject: e.target.value }
-                            setLocalData({ ...localData, faculties: newFaculties })
+                            const newCourses = [...localData.courses]
+                            newCourses[index] = { ...course, subject: e.target.value }
+                            setLocalData({ ...localData, courses: newCourses })
                           }}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green outline-none"
                         />
                       </div>
                     </div>
@@ -357,13 +357,13 @@ export default function AdminDashboard() {
                       </label>
                       <input
                         type="text"
-                        value={faculty.photo}
+                        value={course.photo}
                         onChange={(e) => {
-                          const newFaculties = [...localData.faculties]
-                          newFaculties[index] = { ...faculty, photo: e.target.value }
-                          setLocalData({ ...localData, faculties: newFaculties })
+                          const newCourses = [...localData.courses]
+                          newCourses[index] = { ...course, photo: e.target.value }
+                          setLocalData({ ...localData, courses: newCourses })
                         }}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green outline-none"
                       />
                     </div>
                     <div className="mt-4">
@@ -371,14 +371,14 @@ export default function AdminDashboard() {
                         Description
                       </label>
                       <textarea
-                        value={faculty.description}
+                        value={course.description}
                         onChange={(e) => {
-                          const newFaculties = [...localData.faculties]
-                          newFaculties[index] = { ...faculty, description: e.target.value }
-                          setLocalData({ ...localData, faculties: newFaculties })
+                          const newCourses = [...localData.courses]
+                          newCourses[index] = { ...course, description: e.target.value }
+                          setLocalData({ ...localData, courses: newCourses })
                         }}
                         rows={2}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green outline-none"
                       />
                     </div>
                   </div>

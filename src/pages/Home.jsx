@@ -4,8 +4,7 @@ import ImageSlider from '../components/ImageSlider'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Home() {
-
-  const displaySliderImages =  DUMMY_IMAGES.SLIDER
+  const displaySliderImages = DUMMY_IMAGES.SLIDER
   const displayHeadOfInstitute = DUMMY_DATA.HEAD_OF_INSTITUTE
 
   const features = [
@@ -16,8 +15,8 @@ export default function Home() {
     },
     {
       icon: Users,
-      title: 'Expert Faculty',
-      description: 'Experienced and dedicated teaching professionals',
+      title: 'Expert Courses',
+      description: 'Comprehensive range of educational courses',
     },
     {
       icon: Award,

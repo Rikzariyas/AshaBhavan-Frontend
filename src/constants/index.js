@@ -23,14 +23,14 @@ export const API_ENDPOINTS = {
   UPLOAD_GALLERY_IMAGE: '/gallery/upload',
   DELETE_GALLERY_IMAGE: '/gallery/:id',
 
-  // Faculties
-  GET_FACULTIES: '/faculties',
-  GET_FACULTY_BY_ID: '/faculties/:id',
-  CREATE_FACULTY: '/faculties',
-  UPDATE_FACULTY: '/faculties/:id',
-  DELETE_FACULTY: '/faculties/:id',
-  GET_FACULTY_VIDEOS: '/faculties/videos',
-  UPLOAD_FACULTY_VIDEO: '/faculties/videos',
+  // Courses
+  GET_COURSES: '/courses',
+  GET_COURSE_BY_ID: '/courses/:id',
+  CREATE_COURSE: '/courses',
+  UPDATE_COURSE: '/courses/:id',
+  DELETE_COURSE: '/courses/:id',
+  GET_COURSE_VIDEOS: '/courses/videos',
+  UPLOAD_COURSE_VIDEO: '/courses/videos',
 
   // Contact
   GET_CONTACT_INFO: '/contact',
@@ -41,13 +41,8 @@ export const API_ENDPOINTS = {
 // Dummy Images - Replace with actual URLs later
 export const DUMMY_IMAGES = {
   SLIDER: ['/images/slider/slider-1.jpg', '/images/slider/slider-2.jpg'],
-  HEAD_OF_INSTITUTE:
-    '/images/head-of-institute.png',
-  ABOUT: [
-    '/images/about/about-1.jpg',
-    '/images/about/about-2.jpg',
-    '/images/about/about-3.jpg',
-  ],
+  HEAD_OF_INSTITUTE: '/images/head-of-institute.png',
+  ABOUT: ['/images/about/about-1.jpg', '/images/about/about-2.jpg', '/images/about/about-3.jpg'],
   GALLERY: {
     STUDENT_WORK: [
       'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&h=400&fit=crop',
@@ -65,7 +60,7 @@ export const DUMMY_IMAGES = {
       'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop',
     ],
   },
-  FACULTIES: [
+  COURSES: [
     'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
@@ -121,49 +116,49 @@ export const DUMMY_DATA = {
     ],
   },
 
-  FACULTIES: [
+  COURSES: [
     {
       id: 1,
-      name: 'Dr. Jane Smith',
+      name: 'Mathematics',
       subject: 'Mathematics',
-      photo: DUMMY_IMAGES.FACULTIES[0],
+      photo: DUMMY_IMAGES.COURSES[0],
       description:
-        'Ph.D. in Mathematics with 15 years of teaching experience. Specialized in advanced calculus and algebra.',
-      email: 'jane.smith@ashabhavan.org',
-      qualifications: ['Ph.D. Mathematics', 'M.Sc. Applied Mathematics'],
-      experience: '15 years',
+        'Comprehensive mathematics course covering advanced calculus, algebra, and mathematical reasoning. Perfect for students seeking strong analytical skills.',
+      email: 'math@ashabhavan.org',
+      qualifications: ['Advanced Level', 'Problem Solving'],
+      duration: '12 months',
     },
     {
       id: 2,
-      name: 'Mr. Robert Johnson',
+      name: 'Science',
       subject: 'Science',
-      photo: DUMMY_IMAGES.FACULTIES[1],
+      photo: DUMMY_IMAGES.COURSES[1],
       description:
-        'M.Sc. in Physics, passionate about experimental learning and making science accessible to all students.',
-      email: 'robert.johnson@ashabhavan.org',
-      qualifications: ['M.Sc. Physics', 'B.Ed.'],
-      experience: '12 years',
+        'Hands-on science course focusing on physics, chemistry, and biology. Learn through experimental learning and practical applications.',
+      email: 'science@ashabhavan.org',
+      qualifications: ['Practical Skills', 'Scientific Method'],
+      duration: '12 months',
     },
     {
       id: 3,
-      name: 'Ms. Emily Davis',
+      name: 'English Language',
       subject: 'English',
-      photo: DUMMY_IMAGES.FACULTIES[2],
+      photo: DUMMY_IMAGES.COURSES[2],
       description:
-        'M.A. in English Literature, expert in creative writing and communication skills development.',
-      email: 'emily.davis@ashabhavan.org',
-      qualifications: ['M.A. English Literature', 'B.Ed.'],
-      experience: '10 years',
+        'English language and literature course emphasizing creative writing, communication skills, and critical thinking.',
+      email: 'english@ashabhavan.org',
+      qualifications: ['Communication', 'Literary Analysis'],
+      duration: '12 months',
     },
   ],
 
-  FACULTY_VIDEOS: [
+  COURSE_VIDEOS: [
     {
       id: 1,
-      title: 'Innovative Teaching Methods',
+      title: 'Introduction to Our Courses',
       url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      facultyId: 1,
-      description: 'Exploring modern teaching methodologies in mathematics',
+      courseId: 1,
+      description: 'Learn about our comprehensive course offerings and teaching methodologies',
     },
   ],
 

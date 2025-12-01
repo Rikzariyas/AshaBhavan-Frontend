@@ -4,7 +4,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import About from './pages/About'
 import Gallery from './pages/Gallery'
-import Faculties from './pages/Faculties'
+import Courses from './pages/Courses'
 import Contact from './pages/Contact'
 import AdminLogin from './pages/Admin/Login'
 import AdminDashboard from './pages/Admin/Dashboard'
@@ -25,7 +25,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/gallery" element={<Gallery />} />
-            <Route path="/faculties" element={<Faculties />} />
+            <Route path="/courses" element={<Courses />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route

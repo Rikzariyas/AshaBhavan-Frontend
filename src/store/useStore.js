@@ -12,19 +12,21 @@ export const useStore = create(
 
       // Dynamic data from API (will be populated when backend is ready)
       // For now, these are null - components will use constants as fallback
+      sliderImages: null,
+      headOfInstitute: null,
       aboutData: null,
       gallery: null,
-      faculties: null,
-      facultyVideos: null,
+      courses: null,
+      courseVideos: null,
       contactInfo: null,
 
       // Update functions for API data
-  
- 
+      updateSliderImages: images => set({ sliderImages: images }),
+      updateHeadOfInstitute: data => set({ headOfInstitute: data }),
       updateAboutData: data => set({ aboutData: data }),
       updateGallery: data => set({ gallery: data }),
-      updateFaculties: faculties => set({ faculties }),
-      updateFacultyVideos: videos => set({ facultyVideos: videos }),
+      updateCourses: courses => set({ courses }),
+      updateCourseVideos: videos => set({ courseVideos: videos }),
       updateContactInfo: info => set({ contactInfo: info }),
     }),
     {
