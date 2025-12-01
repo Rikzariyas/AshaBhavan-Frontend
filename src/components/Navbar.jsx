@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Home, Info, Images, Users, Phone, Shield } from 'lucide-react'
+import { Menu, X, Home, Info, Images, Users, Phone, Shield, BookOpen } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useStore } from '../store/useStore'
 import logo from '../assets/asha-logo.png'
@@ -61,7 +61,7 @@ export default function Navbar() {
   const navItems = [
     { path: '/', sectionId: 'home', label: 'Home', icon: Home },
     { path: '/about', sectionId: 'about', label: 'About', icon: Info },
-    { path: '/courses', sectionId: 'courses', label: 'Courses', icon: Users },
+    { path: '/courses', sectionId: 'courses', label: 'Courses', icon: BookOpen },
     { path: '/gallery', sectionId: 'gallery', label: 'Gallery', icon: Images },
     { path: '/contact', sectionId: 'contact', label: 'Contact', icon: Phone },
   ]

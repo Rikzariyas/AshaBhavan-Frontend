@@ -1,40 +1,41 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { LogOut, Save, Upload, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from '../../store/useStore'
+import { DUMMY_DATA, DUMMY_IMAGES } from '../../constants'
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
-  const {
-    isAdmin,
-    logout,
-    sliderImages,
-    headOfInstitute,
-    aboutData,
-    gallery,
-    courses,
-    contactInfo,
-    updateSliderImages,
-    updateHeadOfInstitute,
-    updateAboutData,
-    updateGallery,
-    updateCourses,
-    updateContactInfo,
-  } = useStore()
+  const { isAdmin, logout } = useStore()
+
+  // Load from localStorage or use constants
+  const getStoredData = (key, defaultValue) => {
+    try {
+      const stored = localStorage.getItem(`ashabhavan_${key}`)
+      return stored ? JSON.parse(stored) : defaultValue
+    } catch {
+      return defaultValue
+    }
+  }
 
   const [activeTab, setActiveTab] = useState('home')
   const [localData, setLocalData] = useState({
-    sliderImages,
-    headOfInstitute,
-    aboutData,
-    gallery,
-    courses,
-    contactInfo,
+    sliderImages: getStoredData('sliderImages', DUMMY_IMAGES.SLIDER),
+    headOfInstitute: getStoredData('headOfInstitute', DUMMY_DATA.HEAD_OF_INSTITUTE),
+    aboutData: getStoredData('aboutData', DUMMY_DATA.ABOUT),
+    gallery: getStoredData('gallery', DUMMY_DATA.GALLERY),
+    courses: getStoredData('courses', DUMMY_DATA.COURSES),
+    contactInfo: getStoredData('contactInfo', DUMMY_DATA.CONTACT),
   })
 
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/admin/login')
+    }
+  }, [isAdmin, navigate])
+
   if (!isAdmin) {
-    navigate('/admin/login')
     return null
   }
 
@@ -44,13 +45,14 @@ export default function AdminDashboard() {
   }
 
   const handleSave = () => {
-    updateSliderImages(localData.sliderImages)
-    updateHeadOfInstitute(localData.headOfInstitute)
-    updateAboutData(localData.aboutData)
-    updateGallery(localData.gallery)
-    updateCourses(localData.courses)
-    updateContactInfo(localData.contactInfo)
-    alert('Changes saved successfully!')
+    // Save to localStorage for now (static mode)
+    localStorage.setItem('ashabhavan_sliderImages', JSON.stringify(localData.sliderImages))
+    localStorage.setItem('ashabhavan_headOfInstitute', JSON.stringify(localData.headOfInstitute))
+    localStorage.setItem('ashabhavan_aboutData', JSON.stringify(localData.aboutData))
+    localStorage.setItem('ashabhavan_gallery', JSON.stringify(localData.gallery))
+    localStorage.setItem('ashabhavan_courses', JSON.stringify(localData.courses))
+    localStorage.setItem('ashabhavan_contactInfo', JSON.stringify(localData.contactInfo))
+    alert('Changes saved to localStorage! (Backend integration coming soon)')
   }
 
   const tabs = [

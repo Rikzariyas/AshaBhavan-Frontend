@@ -45,27 +45,27 @@ export const DUMMY_IMAGES = {
   ABOUT: ['/images/about/about-1.jpg', '/images/about/about-2.jpg', '/images/about/about-3.jpg'],
   GALLERY: {
     STUDENT_WORK: [
-      'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop',
+      '/images/gallery/student-work-1.jpg',
+      '/images/gallery/student-work-2.jpg',
+      '/images/gallery/student-work-3.jpg',
     ],
     PROGRAMS: [
-      'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop',
+      '/images/gallery/programs-1.jpg',
+      '/images/gallery/programs-2.jpg',
+      '/images/gallery/programs-3.jpg',
     ],
     PHOTOS: [
-      'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop',
+      '/images/gallery/photos-1.jpg',
+      '/images/gallery/photos-2.jpg',
+      '/images/gallery/photos-3.jpg',
     ],
   },
   COURSES: [
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
+    '/images/courses/course-1.jpg',
+    '/images/courses/course-2.jpg',
+    '/images/courses/course-3.jpg',
   ],
-  PLACEHOLDER: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop',
+  PLACEHOLDER: '/images/placeholder.jpg',
 }
 
 // Dummy Data Constants
@@ -98,22 +98,6 @@ export const DUMMY_DATA = {
     studentWork: DUMMY_IMAGES.GALLERY.STUDENT_WORK,
     programs: DUMMY_IMAGES.GALLERY.PROGRAMS,
     photos: DUMMY_IMAGES.GALLERY.PHOTOS,
-    videos: [
-      {
-        id: 1,
-        title: 'Annual Day Celebration',
-        url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-        thumbnail: DUMMY_IMAGES.GALLERY.PROGRAMS[0],
-        category: 'programs',
-      },
-      {
-        id: 2,
-        title: 'Sports Day Event',
-        url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-        thumbnail: DUMMY_IMAGES.GALLERY.PROGRAMS[1],
-        category: 'programs',
-      },
-    ],
   },
 
   COURSES: [

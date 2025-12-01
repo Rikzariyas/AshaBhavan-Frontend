@@ -1,10 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 import { Mail, Phone, MapPin, Instagram, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useStore } from '../store/useStore'
+import { DUMMY_DATA } from '../constants'
 
 export default function Footer() {
-  const { contactInfo } = useStore()
+  const contactInfo = DUMMY_DATA.CONTACT
   const location = useLocation()
 
   const scrollToSection = (sectionId) => {

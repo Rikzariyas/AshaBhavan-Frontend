@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Phone, Mail, MapPin, Instagram, MessageCircle, Copy, Check, Send } from 'lucide-react'
-import { useStore } from '../store/useStore'
 import { DUMMY_DATA } from '../constants'
 
 export default function Contact() {
-  const { contactInfo } = useStore()
-  // Use store data if available (from API), otherwise use constants
-  const displayContactInfo = contactInfo || DUMMY_DATA.CONTACT
+  const displayContactInfo = DUMMY_DATA.CONTACT
   const [emailCopied, setEmailCopied] = useState(false)
 
   const handleCopyEmail = () => {

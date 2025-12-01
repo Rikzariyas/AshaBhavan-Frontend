@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Play, Image as ImageIcon, Video, BookOpen, Camera } from 'lucide-react'
-import { useStore } from '../store/useStore'
+import { X, Play, Image as ImageIcon, BookOpen, Camera } from 'lucide-react'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Gallery() {
-  const { gallery } = useStore()
-  // Use store data if available (from API), otherwise use constants
-  const displayGallery = gallery || DUMMY_DATA.GALLERY
+  const displayGallery = DUMMY_DATA.GALLERY
   const [selectedImage, setSelectedImage] = useState(null)
   const [activeTab, setActiveTab] = useState('all')
 
@@ -16,7 +13,6 @@ export default function Gallery() {
     { id: 'studentWork', label: 'Student Work', icon: BookOpen },
     { id: 'programs', label: 'Programs', icon: Play },
     { id: 'photos', label: 'Photos', icon: ImageIcon },
-    { id: 'videos', label: 'Videos', icon: Video },
   ]
 
   const allImages = [
@@ -63,67 +59,37 @@ export default function Gallery() {
         </div>
 
         {/* Images Grid */}
-        {activeTab !== 'videos' && (
-          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            <AnimatePresence>
-              {filteredImages.map((item, index) => (
-                <motion.div
-                  key={`${item.category}-${index}`}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  whileHover={{ scale: 1.05 }}
-                  onClick={() => setSelectedImage(item.src)}
-                  className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
-                >
-                  <img
-                    src={item.src || DUMMY_IMAGES.PLACEHOLDER}
-                    alt={`Gallery ${index + 1}`}
-                    className="w-full h-64 object-cover"
-                    onError={e => {
-                      e.target.src = DUMMY_IMAGES.PLACEHOLDER
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                    <ImageIcon
-                      className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                      size={40}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
-        )}
-
-        {/* Videos Section */}
-        {activeTab === 'videos' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {displayGallery.videos.map(video => (
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <AnimatePresence>
+            {filteredImages.map((item, index) => (
               <motion.div
-                key={video.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl shadow-lg overflow-hidden"
+                key={`${item.category}-${index}`}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => setSelectedImage(item.src)}
+                className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
               >
-                <div className="aspect-video">
-                  <iframe
-                    src={video.url}
-                    title={video.title}
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
+                <img
+                  src={item.src || DUMMY_IMAGES.PLACEHOLDER}
+                  alt={`Gallery ${index + 1}`}
+                  className="w-full h-64 object-cover"
+                  onError={e => {
+                    e.target.src = DUMMY_IMAGES.PLACEHOLDER
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                  <ImageIcon
+                    className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                    size={40}
                   />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold text-gray-900">{video.title}</h3>
                 </div>
               </motion.div>
             ))}
-          </div>
-        )}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Image Modal */}
         <AnimatePresence>

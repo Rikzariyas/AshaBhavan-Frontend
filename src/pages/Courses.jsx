@@ -10,11 +10,10 @@ import {
   Users,
 } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
-import { useStore } from '../store/useStore'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Courses() {
-  const { courses } = useStore()
+  const displayCourses = DUMMY_DATA.COURSES 
   const location = useLocation()
 
   const scrollToSection = (sectionId) => {
@@ -38,8 +37,6 @@ export default function Courses() {
       window.location.href = '/#contact'
     }
   }
-  // Use store data if available (from API), otherwise use constants
-  const displayCourses = courses || DUMMY_DATA.COURSES
 
   return (
     <div id="courses" className="min-h-screen">
@@ -70,11 +67,11 @@ export default function Courses() {
             >
               <div className="relative h-64 overflow-hidden">
                 <img
-                  src={course.photo || DUMMY_IMAGES.COURSES[0]}
+                  src={course.photo || DUMMY_IMAGES.PLACEHOLDER}
                   alt={course.name}
                   className="w-full h-full object-cover"
                   onError={e => {
-                    e.target.src = DUMMY_IMAGES.COURSES[0]
+                    e.target.src =  DUMMY_IMAGES.PLACEHOLDER
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
