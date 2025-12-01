@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion'
 import { Target, Eye, CheckCircle } from 'lucide-react'
-import { useStore } from '../store/useStore'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function About() {
-  const { aboutData } = useStore()
-  // Use store data if available (from API), otherwise use constants
-  const displayAboutData = aboutData || DUMMY_DATA.ABOUT
+ 
+  const displayAboutData =  DUMMY_DATA.ABOUT
 
   return (
     <div className="pt-20 min-h-screen">

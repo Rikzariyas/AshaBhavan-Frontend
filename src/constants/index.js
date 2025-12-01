@@ -44,9 +44,9 @@ export const DUMMY_IMAGES = {
   HEAD_OF_INSTITUTE:
     '/images/head-of-institute.png',
   ABOUT: [
-    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&h=400&fit=crop',
-    'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&h=400&fit=crop',
+    '/images/about/about-1.jpg',
+    '/images/about/about-2.jpg',
+    '/images/about/about-3.jpg',
   ],
   GALLERY: {
     STUDENT_WORK: [
