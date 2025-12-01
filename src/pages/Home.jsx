@@ -31,7 +31,7 @@ export default function Home() {
   ]
 
   return (
-    <div className="pt-20">
+    <div id="home" className="pt-20 min-h-screen">
       {/* Hero Section with Slider */}
       <section className="mb-16 px-2 sm:px-6 lg:px-8">
         <ImageSlider images={displaySliderImages} />

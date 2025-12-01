@@ -9,17 +9,40 @@ import {
   Monitor,
   Users,
 } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useStore } from '../store/useStore'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Courses() {
   const { courses } = useStore()
+  const location = useLocation()
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offset = 80 // Navbar height
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  const handleContactClick = (e) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      scrollToSection('contact')
+    } else {
+      window.location.href = '/#contact'
+    }
+  }
   // Use store data if available (from API), otherwise use constants
   const displayCourses = courses || DUMMY_DATA.COURSES
 
   return (
-    <div className="pt-20 min-h-screen">
+    <div id="courses" className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <motion.div
@@ -66,13 +89,13 @@ export default function Courses() {
                   <p className="text-lg text-asha-pink font-semibold">{course.subject}</p>
                 </div>
                 <p className="text-gray-600 leading-relaxed mb-4">{course.description}</p>
-                <Link
-                  to="/contact"
+                <button
+                  onClick={handleContactClick}
                   className="inline-flex items-center space-x-2 px-6 py-3 bg-asha-green text-white rounded-lg font-semibold hover:bg-asha-green/90 transition-colors w-full justify-center"
                 >
                   <Phone size={18} />
                   <span>Contact for More Details</span>
-                </Link>
+                </button>
               </div>
             </motion.div>
           ))}

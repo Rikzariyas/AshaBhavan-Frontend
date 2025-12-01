@@ -29,7 +29,7 @@ export default function Gallery() {
     activeTab === 'all' ? allImages : allImages.filter(img => img.category === activeTab)
 
   return (
-    <div className="pt-20 min-h-screen">
+    <div id="gallery" className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <motion.div

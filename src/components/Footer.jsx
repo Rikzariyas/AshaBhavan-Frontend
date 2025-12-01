@@ -1,10 +1,34 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Mail, Phone, MapPin, Instagram, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useStore } from '../store/useStore'
 
 export default function Footer() {
   const { contactInfo } = useStore()
+  const location = useLocation()
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offset = 80 // Navbar height
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  const handleLinkClick = (e, sectionId) => {
+    if (location.pathname === '/') {
+      e.preventDefault()
+      scrollToSection(sectionId)
+    } else {
+      // Navigate to home with hash
+      window.location.href = `/#${sectionId}`
+    }
+  }
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -33,27 +57,47 @@ export default function Footer() {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-400 hover:text-white transition-colors">
+                <Link 
+                  to="/" 
+                  onClick={(e) => handleLinkClick(e, 'home')}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
+                <Link 
+                  to="/about" 
+                  onClick={(e) => handleLinkClick(e, 'about')}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link to="/gallery" className="text-gray-400 hover:text-white transition-colors">
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link to="/courses" className="text-gray-400 hover:text-white transition-colors">
+                <Link 
+                  to="/courses" 
+                  onClick={(e) => handleLinkClick(e, 'courses')}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Courses
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-400 hover:text-white transition-colors">
+                <Link 
+                  to="/gallery" 
+                  onClick={(e) => handleLinkClick(e, 'gallery')}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Gallery
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  onClick={(e) => handleLinkClick(e, 'contact')}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Contact
                 </Link>
               </li>

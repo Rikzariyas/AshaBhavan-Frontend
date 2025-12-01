@@ -8,23 +8,62 @@ import logo from '../assets/asha-logo.png'
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
   const location = useLocation()
   const { isAdmin } = useStore()
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
+      
+      // Detect active section based on scroll position
+      const sections = ['home', 'about', 'courses', 'gallery', 'contact']
+      const scrollPosition = window.scrollY + 100 // Offset for navbar
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i])
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i])
+          break
+        }
+      }
     }
     window.addEventListener('scroll', handleScroll)
+    handleScroll() // Check on mount
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      const offset = 80 // Navbar height
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - offset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+    }
+    setIsOpen(false)
+  }
+
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      scrollToSection(sectionId)
+    } else {
+      // Navigate to home with hash, then scroll
+      window.location.href = `/#${sectionId}`
+    }
+  }
+
   const navItems = [
-    { path: '/', label: 'Home', icon: Home },
-    { path: '/about', label: 'About', icon: Info },
-    { path: '/gallery', label: 'Gallery', icon: Images },
-    { path: '/courses', label: 'Courses', icon: Users },
-    { path: '/contact', label: 'Contact', icon: Phone },
+    { path: '/', sectionId: 'home', label: 'Home', icon: Home },
+    { path: '/about', sectionId: 'about', label: 'About', icon: Info },
+    { path: '/courses', sectionId: 'courses', label: 'Courses', icon: Users },
+    { path: '/gallery', sectionId: 'gallery', label: 'Gallery', icon: Images },
+    { path: '/contact', sectionId: 'contact', label: 'Contact', icon: Phone },
   ]
 
   return (
@@ -38,7 +77,16 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link 
+            to="/" 
+            onClick={(e) => {
+              if (location.pathname === '/') {
+                e.preventDefault()
+                scrollToSection('home')
+              }
+            }}
+            className="flex items-center space-x-3"
+          >
             <motion.img
               src={logo}
               alt="Asha Bhavan Logo"
@@ -57,11 +105,13 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => {
               const Icon = item.icon
-              const isActive = location.pathname === item.path
+              const isActive = location.pathname === '/' 
+                ? activeSection === item.sectionId 
+                : location.pathname === item.path
               return (
-                <Link
+                <button
                   key={item.path}
-                  to={item.path}
+                  onClick={(e) => handleNavClick(e, item.sectionId)}
                   className={`flex items-center space-x-1 px-4 py-2 rounded-lg transition-colors ${
                     isActive
                       ? 'bg-asha-green text-white'
@@ -70,7 +120,7 @@ export default function Navbar() {
                 >
                   <Icon size={18} />
                   <span>{item.label}</span>
-                </Link>
+                </button>
               )
             })}
             {isAdmin && (
@@ -106,13 +156,14 @@ export default function Navbar() {
             <div className="px-4 py-4 space-y-2">
               {navItems.map((item) => {
                 const Icon = item.icon
-                const isActive = location.pathname === item.path
+                const isActive = location.pathname === '/' 
+                  ? activeSection === item.sectionId 
+                  : location.pathname === item.path
                 return (
-                  <Link
+                  <button
                     key={item.path}
-                    to={item.path}
-                    onClick={() => setIsOpen(false)}
-                    className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors ${
+                    onClick={(e) => handleNavClick(e, item.sectionId)}
+                    className={`w-full flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors text-left ${
                       isActive
                         ? 'bg-asha-green text-white'
                         : 'text-gray-700 hover:bg-asha-pink/10 hover:text-asha-green'
@@ -120,7 +171,7 @@ export default function Navbar() {
                   >
                     <Icon size={20} />
                     <span>{item.label}</span>
-                  </Link>
+                  </button>
                 )
               })}
               {isAdmin && (
