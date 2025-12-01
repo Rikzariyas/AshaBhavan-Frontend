@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion'
 import { Target, Eye, CheckCircle } from 'lucide-react'
 import { useStore } from '../store/useStore'
-import { DUMMY_IMAGES } from '../constants'
+import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function About() {
   const { aboutData } = useStore()
+  // Use store data if available (from API), otherwise use constants
+  const displayAboutData = aboutData || DUMMY_DATA.ABOUT
 
   return (
     <div className="pt-20 min-h-screen">
@@ -35,7 +37,7 @@ export default function About() {
               </div>
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
-                <p className="text-lg text-gray-700 leading-relaxed">{aboutData.mission}</p>
+                <p className="text-lg text-gray-700 leading-relaxed">{displayAboutData.mission}</p>
               </div>
             </div>
           </div>
@@ -55,7 +57,7 @@ export default function About() {
               </div>
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Vision</h2>
-                <p className="text-lg text-gray-700 leading-relaxed">{aboutData.vision}</p>
+                <p className="text-lg text-gray-700 leading-relaxed">{displayAboutData.vision}</p>
               </div>
             </div>
           </div>
@@ -76,7 +78,7 @@ export default function About() {
               <h2 className="text-3xl font-bold text-gray-900">Our Objectives</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {aboutData.objectives.map((objective, index) => (
+              {displayAboutData.objectives.map((objective, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -101,7 +103,7 @@ export default function About() {
         >
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Our Campus</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {aboutData.photos.map((photo, index) => (
+            {displayAboutData.photos.map((photo, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -115,7 +117,7 @@ export default function About() {
                   src={photo || DUMMY_IMAGES.PLACEHOLDER}
                   alt={`Campus ${index + 1}`}
                   className="w-full h-64 object-cover"
-                  onError={(e) => {
+                  onError={e => {
                     e.target.src = DUMMY_IMAGES.PLACEHOLDER
                   }}
                 />

@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Play, Image as ImageIcon, Video, BookOpen, Camera } from 'lucide-react'
 import { useStore } from '../store/useStore'
-import { DUMMY_IMAGES } from '../constants'
+import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Gallery() {
   const { gallery } = useStore()
+  // Use store data if available (from API), otherwise use constants
+  const displayGallery = gallery || DUMMY_DATA.GALLERY
   const [selectedImage, setSelectedImage] = useState(null)
   const [activeTab, setActiveTab] = useState('all')
 
@@ -18,15 +20,13 @@ export default function Gallery() {
   ]
 
   const allImages = [
-    ...gallery.studentWork.map((img) => ({ src: img, category: 'studentWork' })),
-    ...gallery.programs.map((img) => ({ src: img, category: 'programs' })),
-    ...gallery.photos.map((img) => ({ src: img, category: 'photos' })),
+    ...displayGallery.studentWork.map(img => ({ src: img, category: 'studentWork' })),
+    ...displayGallery.programs.map(img => ({ src: img, category: 'programs' })),
+    ...displayGallery.photos.map(img => ({ src: img, category: 'photos' })),
   ]
 
   const filteredImages =
-    activeTab === 'all'
-      ? allImages
-      : allImages.filter((img) => img.category === activeTab)
+    activeTab === 'all' ? allImages : allImages.filter(img => img.category === activeTab)
 
   return (
     <div className="pt-20 min-h-screen">
@@ -43,7 +43,7 @@ export default function Gallery() {
 
         {/* Tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon
             return (
               <button
@@ -64,10 +64,7 @@ export default function Gallery() {
 
         {/* Images Grid */}
         {activeTab !== 'videos' && (
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-          >
+          <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             <AnimatePresence>
               {filteredImages.map((item, index) => (
                 <motion.div
@@ -84,12 +81,15 @@ export default function Gallery() {
                     src={item.src || DUMMY_IMAGES.PLACEHOLDER}
                     alt={`Gallery ${index + 1}`}
                     className="w-full h-64 object-cover"
-                    onError={(e) => {
+                    onError={e => {
                       e.target.src = DUMMY_IMAGES.PLACEHOLDER
                     }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                    <ImageIcon className="text-white opacity-0 group-hover:opacity-100 transition-opacity" size={40} />
+                    <ImageIcon
+                      className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      size={40}
+                    />
                   </div>
                 </motion.div>
               ))}
@@ -100,7 +100,7 @@ export default function Gallery() {
         {/* Videos Section */}
         {activeTab === 'videos' && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {gallery.videos.map((video) => (
+            {displayGallery.videos.map(video => (
               <motion.div
                 key={video.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -150,7 +150,7 @@ export default function Gallery() {
                 src={selectedImage}
                 alt="Selected"
                 className="max-w-full max-h-full object-contain"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               />
             </motion.div>
           )}

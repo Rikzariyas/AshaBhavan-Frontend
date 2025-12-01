@@ -2,16 +2,19 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Phone, Mail, MapPin, Instagram, MessageCircle, Send } from 'lucide-react'
 import { useStore } from '../store/useStore'
+import { DUMMY_DATA } from '../constants'
 
 export default function Contact() {
   const { contactInfo } = useStore()
+  // Use store data if available (from API), otherwise use constants
+  const displayContactInfo = contactInfo || DUMMY_DATA.CONTACT
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault()
     // Handle form submission
     console.log('Form submitted:', formData)
@@ -23,21 +26,21 @@ export default function Contact() {
     {
       icon: Phone,
       label: 'Phone',
-      value: contactInfo.phone,
-      href: `tel:${contactInfo.phone}`,
+      value: displayContactInfo.phone,
+      href: `tel:${displayContactInfo.phone}`,
       color: 'bg-asha-pink/20 text-asha-green',
     },
     {
       icon: Mail,
       label: 'Email',
-      value: contactInfo.email,
-      href: `mailto:${contactInfo.email}`,
+      value: displayContactInfo.email,
+      href: `mailto:${displayContactInfo.email}`,
       color: 'bg-asha-pink/20 text-asha-green',
     },
     {
       icon: MapPin,
       label: 'Address',
-      value: contactInfo.address,
+      value: displayContactInfo.address,
       href: '#',
       color: 'bg-green-100 text-green-600',
     },
@@ -47,13 +50,13 @@ export default function Contact() {
     {
       icon: Instagram,
       label: 'Instagram',
-      href: contactInfo.instagram,
+      href: displayContactInfo.instagram,
       color: 'bg-pink-100 text-pink-600 hover:bg-pink-200',
     },
     {
       icon: MessageCircle,
       label: 'WhatsApp',
-      href: contactInfo.whatsapp,
+      href: displayContactInfo.whatsapp,
       color: 'bg-green-100 text-green-600 hover:bg-green-200',
     },
   ]
@@ -89,7 +92,9 @@ export default function Contact() {
                     whileHover={{ x: 5 }}
                     className="flex items-center space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
                   >
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${method.color}`}>
+                    <div
+                      className={`w-12 h-12 rounded-lg flex items-center justify-center ${method.color}`}
+                    >
                       <Icon size={24} />
                     </div>
                     <div>
@@ -134,7 +139,7 @@ export default function Contact() {
               className="rounded-xl overflow-hidden shadow-lg"
             >
               <iframe
-                src={contactInfo.mapLocation}
+                src={displayContactInfo.mapLocation}
                 width="100%"
                 height="300"
                 style={{ border: 0 }}
@@ -163,7 +168,7 @@ export default function Contact() {
                   type="text"
                   id="name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green focus:border-transparent outline-none transition-all"
                   placeholder="Your name"
@@ -177,7 +182,7 @@ export default function Contact() {
                   type="email"
                   id="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={e => setFormData({ ...formData, email: e.target.value })}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green focus:border-transparent outline-none transition-all"
                   placeholder="your.email@example.com"
@@ -190,7 +195,7 @@ export default function Contact() {
                 <textarea
                   id="message"
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={e => setFormData({ ...formData, message: e.target.value })}
                   required
                   rows={6}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green focus:border-transparent outline-none transition-all resize-none"

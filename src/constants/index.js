@@ -40,13 +40,9 @@ export const API_ENDPOINTS = {
 
 // Dummy Images - Replace with actual URLs later
 export const DUMMY_IMAGES = {
-  SLIDER: [
-    'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200&h=600&fit=crop',
-  ],
+  SLIDER: ['/images/slider/slider-1.jpg', '/images/slider/slider-2.jpg'],
   HEAD_OF_INSTITUTE:
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
+    '/images/head-of-institute.png',
   ABOUT: [
     'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop',
     'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&h=400&fit=crop',

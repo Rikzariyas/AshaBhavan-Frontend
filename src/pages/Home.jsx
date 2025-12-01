@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion'
 import { GraduationCap, Users, Award, Heart } from 'lucide-react'
 import ImageSlider from '../components/ImageSlider'
-import { useStore } from '../store/useStore'
-import { DUMMY_IMAGES } from '../constants'
+import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Home() {
-  const { sliderImages, headOfInstitute } = useStore()
+
+  const displaySliderImages =  DUMMY_IMAGES.SLIDER
+  const displayHeadOfInstitute = DUMMY_DATA.HEAD_OF_INSTITUTE
 
   const features = [
     {
@@ -33,8 +34,8 @@ export default function Home() {
   return (
     <div className="pt-20">
       {/* Hero Section with Slider */}
-      <section className="mb-16 px-4 sm:px-6 lg:px-8">
-        <ImageSlider images={sliderImages} />
+      <section className="mb-16 px-2 sm:px-6 lg:px-8">
+        <ImageSlider images={displaySliderImages} />
       </section>
 
       {/* Head of Institute Section */}
@@ -53,10 +54,10 @@ export default function Home() {
               className="flex-shrink-0"
             >
               <img
-                src={headOfInstitute.photo || DUMMY_IMAGES.HEAD_OF_INSTITUTE}
-                alt={headOfInstitute.name}
+                src={displayHeadOfInstitute.photo || DUMMY_IMAGES.HEAD_OF_INSTITUTE}
+                alt={displayHeadOfInstitute.name}
                 className="w-64 h-64 rounded-full object-cover shadow-lg"
-                onError={(e) => {
+                onError={e => {
                   e.target.src = DUMMY_IMAGES.HEAD_OF_INSTITUTE
                 }}
               />
@@ -68,7 +69,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2"
               >
-                {headOfInstitute.name}
+                {displayHeadOfInstitute.name}
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0, x: -20 }}
@@ -77,7 +78,7 @@ export default function Home() {
                 transition={{ delay: 0.1 }}
                 className="text-xl text-asha-green mb-4"
               >
-                {headOfInstitute.title}
+                {displayHeadOfInstitute.title}
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, x: -20 }}
@@ -86,7 +87,7 @@ export default function Home() {
                 transition={{ delay: 0.2 }}
                 className="text-gray-600 leading-relaxed"
               >
-                {headOfInstitute.description}
+                {displayHeadOfInstitute.description}
               </motion.p>
             </div>
           </div>

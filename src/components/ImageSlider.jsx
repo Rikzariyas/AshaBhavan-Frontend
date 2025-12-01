@@ -6,24 +6,30 @@ import { DUMMY_IMAGES } from '../constants'
 export default function ImageSlider({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  // Safety check: ensure images is an array
+  const imageArray =
+    Array.isArray(images) && images.length > 0 ? images : [DUMMY_IMAGES.PLACEHOLDER]
+
   useEffect(() => {
+    if (imageArray.length <= 1) return
+
     const timer = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % images.length)
+      setCurrentIndex(prev => (prev + 1) % imageArray.length)
     }, 5000)
 
     return () => clearInterval(timer)
-  }, [images.length])
+  }, [imageArray.length])
 
   const goToPrevious = () => {
-    setCurrentIndex(prev => (prev - 1 + images.length) % images.length)
+    setCurrentIndex(prev => (prev - 1 + imageArray.length) % imageArray.length)
   }
 
   const goToNext = () => {
-    setCurrentIndex(prev => (prev + 1) % images.length)
+    setCurrentIndex(prev => (prev + 1) % imageArray.length)
   }
 
   return (
-    <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden rounded-lg">
+    <div className="relative h-[200px] md:h-[300px] lg:h-[400px] overflow-hidden rounded-lg">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -34,7 +40,7 @@ export default function ImageSlider({ images }) {
           className="absolute inset-0"
         >
           <img
-            src={images[currentIndex] || DUMMY_IMAGES.PLACEHOLDER}
+            src={imageArray[currentIndex] || DUMMY_IMAGES.PLACEHOLDER}
             alt={`Slide ${currentIndex + 1}`}
             className="w-full h-full object-cover"
             onError={e => {
@@ -61,7 +67,7 @@ export default function ImageSlider({ images }) {
 
       {/* Dots Indicator */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
+        {imageArray.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}

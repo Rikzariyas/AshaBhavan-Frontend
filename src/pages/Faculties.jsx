@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
 import { GraduationCap, BookOpen, Award } from 'lucide-react'
 import { useStore } from '../store/useStore'
-import { DUMMY_IMAGES } from '../constants'
+import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Faculties() {
   const { faculties, facultyVideos } = useStore()
+  // Use store data if available (from API), otherwise use constants
+  const displayFaculties = faculties || DUMMY_DATA.FACULTIES
+  const displayFacultyVideos = facultyVideos || DUMMY_DATA.FACULTY_VIDEOS
 
   return (
     <div className="pt-20 min-h-screen">
@@ -23,7 +26,7 @@ export default function Faculties() {
 
         {/* Faculty Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {faculties.map((faculty, index) => (
+          {displayFaculties.map((faculty, index) => (
             <motion.div
               key={faculty.id}
               initial={{ opacity: 0, y: 30 }}
@@ -38,7 +41,7 @@ export default function Faculties() {
                   src={faculty.photo || DUMMY_IMAGES.FACULTIES[0]}
                   alt={faculty.name}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
+                  onError={e => {
                     e.target.src = DUMMY_IMAGES.FACULTIES[0]
                   }}
                 />
@@ -60,7 +63,7 @@ export default function Faculties() {
         </div>
 
         {/* Faculty Videos Section */}
-        {facultyVideos.length > 0 && (
+        {displayFacultyVideos.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +74,7 @@ export default function Faculties() {
               <h2 className="text-3xl font-bold text-gray-900">Faculty Videos</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {facultyVideos.map((video) => (
+              {displayFacultyVideos.map(video => (
                 <motion.div
                   key={video.id}
                   initial={{ opacity: 0, scale: 0.9 }}
