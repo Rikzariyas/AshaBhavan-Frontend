@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Instagram, MessageCircle, Send } from 'lucide-react'
+import { Phone, Mail, MapPin, Instagram, MessageCircle, Copy, Check, Send } from 'lucide-react'
 import { useStore } from '../store/useStore'
 import { DUMMY_DATA } from '../constants'
 
@@ -8,18 +8,22 @@ export default function Contact() {
   const { contactInfo } = useStore()
   // Use store data if available (from API), otherwise use constants
   const displayContactInfo = contactInfo || DUMMY_DATA.CONTACT
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
+  const [emailCopied, setEmailCopied] = useState(false)
 
-  const handleSubmit = e => {
-    e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! We will get back to you soon.')
-    setFormData({ name: '', email: '', message: '' })
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(displayContactInfo.email)
+    setEmailCopied(true)
+    setTimeout(() => setEmailCopied(false), 2000)
+  }
+
+  const handleSendEmail = () => {
+    window.location.href = `mailto:${displayContactInfo.email}`
+  }
+
+  const handleWhatsApp = () => {
+    // Extract phone number from WhatsApp URL or use the phone number
+    const phoneNumber = displayContactInfo.whatsapp.replace(/[^\d]/g, '')
+    window.open(`https://wa.me/${phoneNumber}`, '_blank')
   }
 
   const contactMethods = [
@@ -89,16 +93,16 @@ export default function Contact() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    whileHover={{ x: 5 }}
-                    className="flex items-center space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    className="flex items-center space-x-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all border border-gray-100"
                   >
                     <div
-                      className={`w-12 h-12 rounded-lg flex items-center justify-center ${method.color}`}
+                      className={`w-14 h-14 rounded-xl flex items-center justify-center ${method.color} shadow-sm`}
                     >
-                      <Icon size={24} />
+                      <Icon size={26} />
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-500">{method.label}</p>
+                    <div className="flex-1">
+                      <p className="text-sm text-gray-500 mb-1">{method.label}</p>
                       <p className="text-lg font-semibold text-gray-900">{method.value}</p>
                     </div>
                   </motion.a>
@@ -111,21 +115,24 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className="bg-white rounded-xl shadow-lg p-6"
             >
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Follow Us</h3>
               <div className="flex space-x-4">
                 {socialLinks.map((social, index) => {
                   const Icon = social.icon
                   return (
-                    <a
+                    <motion.a
                       key={index}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`p-4 rounded-lg transition-colors ${social.color}`}
+                      whileHover={{ scale: 1.1, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      className={`p-4 rounded-xl transition-all shadow-md hover:shadow-lg ${social.color}`}
                     >
                       <Icon size={24} />
-                    </a>
+                    </motion.a>
                   )
                 })}
               </div>
@@ -136,8 +143,14 @@ export default function Contact() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-xl overflow-hidden shadow-lg"
+              className="bg-white rounded-xl shadow-lg overflow-hidden"
             >
+              <div className="p-4 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+                  <MapPin className="text-asha-green" size={20} />
+                  <span>Our Location</span>
+                </h3>
+              </div>
               <iframe
                 src={displayContactInfo.mapLocation}
                 width="100%"
@@ -147,72 +160,105 @@ export default function Contact() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Location Map"
+                className="w-full"
               />
             </motion.div>
           </div>
 
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-2xl shadow-xl p-8"
-          >
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={e => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green focus:border-transparent outline-none transition-all"
-                  placeholder="Your name"
-                />
+          {/* Send us a Message Section */}
+          <div className="space-y-6">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-2xl font-bold text-gray-900 mb-6"
+            >
+              Send us a Message
+            </motion.h2>
+
+            {/* Email Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-2xl shadow-xl p-8 border-2 border-asha-green/20 hover:border-asha-green/40 transition-all"
+            >
+              <div className="flex items-start space-x-4 mb-6">
+                <div className="w-14 h-14 bg-asha-green/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Mail className="text-asha-green" size={28} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
+                  <p className="text-gray-600 mb-4">Send us an email for inquiries and support</p>
+                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-gray-500 mb-1">Email Address</p>
+                    <p className="text-lg font-semibold text-gray-900">{displayContactInfo.email}</p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <motion.button
+                      onClick={handleCopyEmail}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                    >
+                      {emailCopied ? (
+                        <>
+                          <Check size={18} className="text-asha-green" />
+                          <span>Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={18} />
+                          <span>Copy Email</span>
+                        </>
+                      )}
+                    </motion.button>
+                    <motion.button
+                      onClick={handleSendEmail}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex-1 flex items-center justify-center space-x-2 px-6 py-3 bg-asha-green text-white rounded-lg font-semibold hover:bg-asha-green/90 transition-colors"
+                    >
+                      <Send size={18} />
+                      <span>Send Email</span>
+                    </motion.button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={e => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green focus:border-transparent outline-none transition-all"
-                  placeholder="your.email@example.com"
-                />
+            </motion.div>
+
+            {/* WhatsApp Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-2xl shadow-xl p-8 border-2 border-green-200 hover:border-green-400 transition-all"
+            >
+              <div className="flex items-start space-x-4 mb-6">
+                <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <MessageCircle className="text-green-600" size={28} />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">WhatsApp Us</h3>
+                  <p className="text-gray-600 mb-4">Chat with us directly on WhatsApp</p>
+                  <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-gray-500 mb-1">Phone Number</p>
+                    <p className="text-lg font-semibold text-gray-900">{displayContactInfo.phone}</p>
+                  </div>
+                  <motion.button
+                    onClick={handleWhatsApp}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors"
+                  >
+                    <MessageCircle size={18} />
+                    <span>Send Message on WhatsApp</span>
+                  </motion.button>
+                </div>
               </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={e => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-asha-green focus:border-transparent outline-none transition-all resize-none"
-                  placeholder="Your message..."
-                />
-              </div>
-              <motion.button
-                type="submit"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-asha-green text-white py-3 rounded-lg font-semibold flex items-center justify-center space-x-2 hover:bg-asha-green/90 transition-colors"
-              >
-                <Send size={20} />
-                <span>Send Message</span>
-              </motion.button>
-            </form>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
