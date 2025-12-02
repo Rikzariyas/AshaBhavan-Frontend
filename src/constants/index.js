@@ -5,37 +5,11 @@ export const API_ENDPOINTS = {
   // Auth
   LOGIN: '/auth/login',
   LOGOUT: '/auth/logout',
-  REFRESH_TOKEN: '/auth/refresh',
-
-  // Home
-  GET_SLIDER_IMAGES: '/home/slider',
-  UPDATE_SLIDER_IMAGES: '/home/slider',
-  GET_HEAD_OF_INSTITUTE: '/home/head-of-institute',
-  UPDATE_HEAD_OF_INSTITUTE: '/home/head-of-institute',
-
-  // About
-  GET_ABOUT_DATA: '/about',
-  UPDATE_ABOUT_DATA: '/about',
-
   // Gallery
   GET_GALLERY: '/gallery',
-  UPDATE_GALLERY: '/gallery',
+  EDIT_GALLERY_ITEM: '/gallery/:id',
   UPLOAD_GALLERY_IMAGE: '/gallery/upload',
   DELETE_GALLERY_IMAGE: '/gallery/:id',
-
-  // Courses
-  GET_COURSES: '/courses',
-  GET_COURSE_BY_ID: '/courses/:id',
-  CREATE_COURSE: '/courses',
-  UPDATE_COURSE: '/courses/:id',
-  DELETE_COURSE: '/courses/:id',
-  GET_COURSE_VIDEOS: '/courses/videos',
-  UPLOAD_COURSE_VIDEO: '/courses/videos',
-
-  // Contact
-  GET_CONTACT_INFO: '/contact',
-  UPDATE_CONTACT_INFO: '/contact',
-  SUBMIT_CONTACT_FORM: '/contact/submit',
 }
 
 // Dummy Images - Replace with actual URLs later
@@ -61,9 +35,10 @@ export const DUMMY_IMAGES = {
     ],
   },
   COURSES: [
-    '/images/courses/course-1.jpg',
-    '/images/courses/course-2.jpg',
-    '/images/courses/course-3.jpg',
+    '/images/courses/Tailoring Course.png',
+    '/images/courses/Embroidery Course.png',
+    '/images/courses/FDGT Course.png',
+    '/images/courses/Computer Course.png',
   ],
   PLACEHOLDER: '/images/placeholder.jpg',
 }
@@ -103,48 +78,42 @@ export const DUMMY_DATA = {
   COURSES: [
     {
       id: 1,
-      name: 'Mathematics',
-      subject: 'Mathematics',
+      name: 'Tailoring Course',
+      subject: 'Tailoring',
       photo: DUMMY_IMAGES.COURSES[0],
       description:
-        'Comprehensive mathematics course covering advanced calculus, algebra, and mathematical reasoning. Perfect for students seeking strong analytical skills.',
-      email: 'math@ashabhavan.org',
-      qualifications: ['Advanced Level', 'Problem Solving'],
-      duration: '12 months',
+        'Hands-on skills training includes mastery in garment construction, alteration and repair techniques. Precision and attention to detail help develop fine motor skills. Entrepreneurial opportunities to start their own tailoring business or work in garment manufacturing.',
+  
     },
     {
       id: 2,
-      name: 'Science',
-      subject: 'Science',
+      name: 'Embroidery',
+      subject: 'Embroidery',
       photo: DUMMY_IMAGES.COURSES[1],
       description:
-        'Hands-on science course focusing on physics, chemistry, and biology. Learn through experimental learning and practical applications.',
-      email: 'science@ashabhavan.org',
-      qualifications: ['Practical Skills', 'Scientific Method'],
-      duration: '12 months',
+        'Embroidery has its traditional importance. It can be calming and meditative, promoting relaxation and focus. Adds value to garments with attractive stitching patterns. Helps students achieve self-sufficiency in life and secure jobs in private and public sectors.',
+    
     },
     {
       id: 3,
-      name: 'English Language',
-      subject: 'English',
+      name: 'Fashion Designing & Garment Technology (FDGT)',
+      subject: 'FDGT',
       photo: DUMMY_IMAGES.COURSES[2],
       description:
-        'English language and literature course emphasizing creative writing, communication skills, and critical thinking.',
-      email: 'english@ashabhavan.org',
-      qualifications: ['Communication', 'Literary Analysis'],
-      duration: '12 months',
+        'Government recognized course under Kerala Technical Education. Students are engaged with regular classes, industrial visits, internships, and project works. Develop skills in garment construction, textile science, and fashion illustration. Career opportunities in fashion designing and styling.',
+   
+    },
+    {
+      id: 4,
+      name: 'Computer Courses',
+      subject: 'Computer',
+      photo: DUMMY_IMAGES.COURSES[3],
+      description:
+        'Our students are very much interested in computer courses such as MS Office, DTP, English and Malayalam Typing. We are preparing them for exams. Our computer courses have recognition from the Indian Computer Academy.',
+   
     },
   ],
 
-  COURSE_VIDEOS: [
-    {
-      id: 1,
-      title: 'Introduction to Our Courses',
-      url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      courseId: 1,
-      description: 'Learn about our comprehensive course offerings and teaching methodologies',
-    },
-  ],
 
   CONTACT: {
     phone: '+91 1234567890',
