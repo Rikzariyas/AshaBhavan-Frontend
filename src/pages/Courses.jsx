@@ -8,6 +8,7 @@ import {
   Shirt,
   Monitor,
   Users,
+  BookOpenIcon
 } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
@@ -108,7 +109,7 @@ export default function Courses() {
           <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
             <div className="flex items-center space-x-4 mb-8">
               <div className="w-12 h-12 bg-asha-green rounded-lg flex items-center justify-center">
-                <Users className="text-white" size={24} />
+                <BookOpenIcon className="text-white" size={24} />
               </div>
               <h2 className="text-3xl font-bold text-gray-900">About Our Courses</h2>
             </div>
