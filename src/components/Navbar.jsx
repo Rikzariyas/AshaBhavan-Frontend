@@ -15,7 +15,7 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
-      
+
       // Detect active section based on scroll position
       const sections = ['home', 'about', 'courses', 'gallery', 'contact']
       const scrollPosition = window.scrollY + 100 // Offset for navbar
@@ -33,7 +33,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = sectionId => {
     const element = document.getElementById(sectionId)
     if (element) {
       const offset = 80 // Navbar height
@@ -77,9 +77,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link 
-            to="/" 
-            onClick={(e) => {
+          <Link
+            to="/"
+            onClick={e => {
               if (location.pathname === '/') {
                 e.preventDefault()
                 scrollToSection('home')
@@ -103,15 +103,16 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => {
+            {navItems.map(item => {
               const Icon = item.icon
-              const isActive = location.pathname === '/' 
-                ? activeSection === item.sectionId 
-                : location.pathname === item.path
+              const isActive =
+                location.pathname === '/'
+                  ? activeSection === item.sectionId
+                  : location.pathname === item.path
               return (
                 <button
                   key={item.path}
-                  onClick={(e) => handleNavClick(e, item.sectionId)}
+                  onClick={e => handleNavClick(e, item.sectionId)}
                   className={`flex items-center space-x-1 px-4 py-2 rounded-lg transition-colors ${
                     isActive
                       ? 'bg-asha-green text-white'
@@ -154,15 +155,16 @@ export default function Navbar() {
             className="md:hidden border-t border-gray-200"
           >
             <div className="px-4 py-4 space-y-2">
-              {navItems.map((item) => {
+              {navItems.map(item => {
                 const Icon = item.icon
-                const isActive = location.pathname === '/' 
-                  ? activeSection === item.sectionId 
-                  : location.pathname === item.path
+                const isActive =
+                  location.pathname === '/'
+                    ? activeSection === item.sectionId
+                    : location.pathname === item.path
                 return (
                   <button
                     key={item.path}
-                    onClick={(e) => handleNavClick(e, item.sectionId)}
+                    onClick={e => handleNavClick(e, item.sectionId)}
                     className={`w-full flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors text-left ${
                       isActive
                         ? 'bg-asha-green text-white'

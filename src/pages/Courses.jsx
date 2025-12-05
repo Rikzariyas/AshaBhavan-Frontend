@@ -13,10 +13,10 @@ import { useLocation } from 'react-router-dom'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function Courses() {
-  const displayCourses = DUMMY_DATA.COURSES 
+  const displayCourses = DUMMY_DATA.COURSES
   const location = useLocation()
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = sectionId => {
     const element = document.getElementById(sectionId)
     if (element) {
       const offset = 80 // Navbar height
@@ -29,7 +29,7 @@ export default function Courses() {
     }
   }
 
-  const handleContactClick = (e) => {
+  const handleContactClick = e => {
     e.preventDefault()
     if (location.pathname === '/') {
       scrollToSection('contact')
@@ -53,8 +53,8 @@ export default function Courses() {
           </p>
         </motion.div>
 
-    {/* Course Cards */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {/* Course Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {displayCourses.map((course, index) => (
             <motion.div
               key={course.id}
@@ -71,7 +71,7 @@ export default function Courses() {
                   alt={course.name}
                   className="w-full h-full object-cover"
                   onError={e => {
-                    e.target.src =  DUMMY_IMAGES.PLACEHOLDER
+                    e.target.src = DUMMY_IMAGES.PLACEHOLDER
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -285,8 +285,6 @@ export default function Courses() {
             </div>
           </div>
         </motion.section>
-
-    
       </div>
     </div>
   )

@@ -189,7 +189,9 @@ export default function Contact() {
                   <p className="text-gray-600 mb-4">Send us an email for inquiries and support</p>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <p className="text-sm text-gray-500 mb-1">Email Address</p>
-                    <p className="text-lg font-semibold text-gray-900">{displayContactInfo.email}</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {displayContactInfo.email}
+                    </p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <motion.button
@@ -241,7 +243,9 @@ export default function Contact() {
                   <p className="text-gray-600 mb-4">Chat with us directly on WhatsApp</p>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <p className="text-sm text-gray-500 mb-1">Phone Number</p>
-                    <p className="text-lg font-semibold text-gray-900">{displayContactInfo.phone}</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {displayContactInfo.phone}
+                    </p>
                   </div>
                   <motion.button
                     onClick={handleWhatsApp}

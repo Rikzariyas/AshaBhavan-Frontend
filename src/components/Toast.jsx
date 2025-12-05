@@ -89,4 +89,3 @@ export function useToast() {
     showInfo: (message, duration) => showToast(message, 'info', duration),
   }
 }
-
