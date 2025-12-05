@@ -1,5 +1,5 @@
 // API Endpoints
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9002/api'
 
 export const API_ENDPOINTS = {
   // Auth
@@ -83,7 +83,6 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[0],
       description:
         'Hands-on skills training includes mastery in garment construction, alteration and repair techniques. Precision and attention to detail help develop fine motor skills. Entrepreneurial opportunities to start their own tailoring business or work in garment manufacturing.',
-  
     },
     {
       id: 2,
@@ -92,7 +91,6 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[1],
       description:
         'Embroidery has its traditional importance. It can be calming and meditative, promoting relaxation and focus. Adds value to garments with attractive stitching patterns. Helps students achieve self-sufficiency in life and secure jobs in private and public sectors.',
-    
     },
     {
       id: 3,
@@ -101,7 +99,6 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[2],
       description:
         'Government recognized course under Kerala Technical Education. Students are engaged with regular classes, industrial visits, internships, and project works. Develop skills in garment construction, textile science, and fashion illustration. Career opportunities in fashion designing and styling.',
-   
     },
     {
       id: 4,
@@ -110,10 +107,8 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[3],
       description:
         'Our students are very much interested in computer courses such as MS Office, DTP, English and Malayalam Typing. We are preparing them for exams. Our computer courses have recognition from the Indian Computer Academy.',
-   
     },
   ],
-
 
   CONTACT: {
     phone: '+91 1234567890',

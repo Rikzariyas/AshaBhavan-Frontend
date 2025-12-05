@@ -1,29 +1,45 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Shield, Lock } from 'lucide-react'
+import { Shield, Lock, Loader2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useStore } from '../../store/useStore'
-import { ADMIN_CONSTANTS } from '../../constants'
+import { ADMIN_CONSTANTS, API_BASE_URL } from '../../constants'
+import axios from 'axios'
 
 export default function AdminLogin() {
   const [credentials, setCredentials] = useState({ username: '', password: '' })
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { setAdmin } = useStore()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setLoading(true)
 
-    // Simple authentication (in production, use proper backend authentication with JWT)
-    if (
-      credentials.username === ADMIN_CONSTANTS.DEFAULT_USERNAME &&
-      credentials.password === ADMIN_CONSTANTS.DEFAULT_PASSWORD
-    ) {
-      setAdmin('admin-token-' + Date.now())
-      navigate('/admin')
-    } else {
-      setError(`Invalid credentials. Use: ${ADMIN_CONSTANTS.DEFAULT_USERNAME} / ${ADMIN_CONSTANTS.DEFAULT_PASSWORD}`)
+    try {
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+        username: credentials.username,
+        password: credentials.password,
+      })
+
+      if (response.data.success && response.data.data?.token) {
+        // Store the token and set admin status
+        setAdmin(response.data.data.token)
+        navigate('/admin')
+      } else {
+        setError('Login failed. Please check your credentials.')
+      }
+    } catch (err) {
+      console.error('Login error:', err)
+      setError(
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        'Invalid credentials. Please try again.'
+      )
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -88,19 +104,21 @@ export default function AdminLogin() {
 
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full bg-asha-green text-white py-3 rounded-lg font-semibold hover:bg-asha-green/90 transition-colors"
+            disabled={loading}
+            whileHover={{ scale: loading ? 1 : 1.02 }}
+            whileTap={{ scale: loading ? 1 : 0.98 }}
+            className="w-full bg-asha-green text-white py-3 rounded-lg font-semibold hover:bg-asha-green/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           >
-            Login
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                <span>Logging in...</span>
+              </>
+            ) : (
+              <span>Login</span>
+            )}
           </motion.button>
         </form>
-
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg text-sm text-gray-600">
-          <p className="font-semibold mb-1">Demo Credentials:</p>
-          <p>Username: {ADMIN_CONSTANTS.DEFAULT_USERNAME}</p>
-          <p>Password: {ADMIN_CONSTANTS.DEFAULT_PASSWORD}</p>
-        </div>
       </motion.div>
     </div>
   )
