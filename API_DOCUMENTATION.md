@@ -2,9 +2,9 @@
 
 This document describes all API endpoints for the AshaBhavan Trust website backend.
 
-**Base URL:** `http://localhost:3000/api`
+**Base URL:** `http://localhost:9002/api`
 
-**Authentication:** JWT tokens (to be implemented)
+**Authentication:** JWT tokens
 
 - Include token in header: `Authorization: Bearer <token>`
 
@@ -93,7 +93,7 @@ This document describes all API endpoints for the AshaBhavan Trust website backe
 
 **Headers:**
 
-```
+```http
 Authorization: Bearer <token>
 ```
 
@@ -108,214 +108,9 @@ Authorization: Bearer <token>
 
 ---
 
-## Home Page Endpoints
-
-### 4. Get Slider Images
-
-**GET** `/home/slider`
-
-**Description:** Get all slider images for home page
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "images": [
-      {
-        "id": "image_id_1",
-        "url": "https://example.com/image1.jpg",
-        "order": 1,
-        "alt": "Image description",
-        "createdAt": "2024-01-01T00:00:00.000Z"
-      }
-    ]
-  }
-}
-```
-
----
-
-### 5. Update Slider Images
-
-**PUT** `/home/slider`
-
-**Description:** Update slider images (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "images": [
-    {
-      "url": "https://example.com/new-image1.jpg",
-      "order": 1,
-      "alt": "New image description"
-    }
-  ]
-}
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "Slider images updated successfully",
-  "data": {
-    "images": [...]
-  }
-}
-```
-
----
-
-### 6. Get Head of Institute
-
-**GET** `/home/head-of-institute`
-
-**Description:** Get head of institute information
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "name": "Dr. John Doe",
-    "title": "Head of Institute",
-    "description": "With over 20 years of experience...",
-    "photo": "https://example.com/photo.jpg",
-    "updatedAt": "2024-01-01T00:00:00.000Z"
-  }
-}
-```
-
----
-
-### 7. Update Head of Institute
-
-**PUT** `/home/head-of-institute`
-
-**Description:** Update head of institute information (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "name": "Dr. John Doe",
-  "title": "Head of Institute",
-  "description": "Updated description...",
-  "photo": "https://example.com/new-photo.jpg"
-}
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "Head of institute updated successfully",
-  "data": {
-    "name": "Dr. John Doe",
-    "title": "Head of Institute",
-    "description": "Updated description...",
-    "photo": "https://example.com/new-photo.jpg"
-  }
-}
-```
-
----
-
-## About Page Endpoints
-
-### 8. Get About Data
-
-**GET** `/about`
-
-**Description:** Get about page data (mission, vision, objectives, photos)
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "mission": "To provide quality education...",
-    "vision": "To be a leading educational institution...",
-    "objectives": [
-      "Provide quality education accessible to all",
-      "Foster holistic development of students"
-    ],
-    "photos": [
-      {
-        "id": "photo_id_1",
-        "url": "https://example.com/photo1.jpg",
-        "order": 1
-      }
-    ]
-  }
-}
-```
-
----
-
-### 9. Update About Data
-
-**PUT** `/about`
-
-**Description:** Update about page data (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "mission": "Updated mission statement...",
-  "vision": "Updated vision statement...",
-  "objectives": ["Objective 1", "Objective 2"],
-  "photos": [
-    {
-      "url": "https://example.com/new-photo.jpg",
-      "order": 1
-    }
-  ]
-}
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "About data updated successfully",
-  "data": {...}
-}
-```
-
----
-
 ## Gallery Endpoints
 
-### 10. Get Gallery
+### 4. Get Gallery
 
 **GET** `/gallery`
 
@@ -366,53 +161,56 @@ Authorization: Bearer <token>
 
 ---
 
-### 11. Update Gallery
+### 5. Update Gallery Item
 
-**PUT** `/gallery`
+**PATCH** `/gallery/:id`
 
-**Description:** Update gallery items (admin only)
+**Description:** Update a specific gallery item (admin only)
 
 **Headers:**
 
-```
+```http
 Authorization: Bearer <token>
+Content-Type: multipart/form-data
 ```
 
-**Request Body:**
+**URL Parameters:**
 
-```json
-{
-  "studentWork": [
-    {
-      "url": "https://example.com/new-work.jpg",
-      "title": "New Student Work"
-    }
-  ],
-  "programs": [...],
-  "photos": [...],
-  "videos": [
-    {
-      "title": "New Video",
-      "url": "https://www.youtube.com/embed/...",
-      "thumbnail": "https://example.com/thumbnail.jpg"
-    }
-  ]
-}
-```
+- `id`: Gallery item ID
+
+**Request Body (Form Data):**
+
+- `category`: String (`studentWork`, `programs`, `photos`) - optional
+- `title`: String - optional
+- `image`: File (image file) - optional (only if updating the image)
 
 **Response (200 OK):**
 
 ```json
 {
   "success": true,
-  "message": "Gallery updated successfully",
-  "data": {...}
+  "message": "Gallery item updated successfully",
+  "data": {
+    "id": "item_id",
+    "url": "https://example.com/updated-image.jpg",
+    "category": "studentWork",
+    "title": "Updated Title"
+  }
+}
+```
+
+**Error Response (404 Not Found):**
+
+```json
+{
+  "success": false,
+  "message": "Gallery item not found"
 }
 ```
 
 ---
 
-### 12. Upload Gallery Image
+### 6. Upload Gallery Image
 
 **POST** `/gallery/upload`
 
@@ -420,7 +218,7 @@ Authorization: Bearer <token>
 
 **Headers:**
 
-```
+```http
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
 ```
@@ -448,7 +246,7 @@ Content-Type: multipart/form-data
 
 ---
 
-### 13. Delete Gallery Item
+### 7. Delete Gallery Item
 
 **DELETE** `/gallery/:id`
 
@@ -456,7 +254,7 @@ Content-Type: multipart/form-data
 
 **Headers:**
 
-```
+```http
 Authorization: Bearer <token>
 ```
 
@@ -470,352 +268,6 @@ Authorization: Bearer <token>
 {
   "success": true,
   "message": "Gallery item deleted successfully"
-}
-```
-
----
-
-## Faculties Endpoints
-
-### 14. Get All Faculties
-
-**GET** `/faculties`
-
-**Description:** Get all faculty members
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "faculties": [
-      {
-        "id": "faculty_id_1",
-        "name": "Dr. Jane Smith",
-        "subject": "Mathematics",
-        "photo": "https://example.com/photo.jpg",
-        "description": "Ph.D. in Mathematics...",
-        "email": "jane.smith@ashabhavan.org",
-        "qualifications": ["Ph.D. Mathematics", "M.Sc. Applied Mathematics"],
-        "experience": "15 years",
-        "createdAt": "2024-01-01T00:00:00.000Z",
-        "updatedAt": "2024-01-01T00:00:00.000Z"
-      }
-    ]
-  }
-}
-```
-
----
-
-### 15. Get Faculty by ID
-
-**GET** `/faculties/:id`
-
-**Description:** Get a specific faculty member
-
-**URL Parameters:**
-
-- `id`: Faculty ID
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "id": "faculty_id_1",
-    "name": "Dr. Jane Smith",
-    "subject": "Mathematics",
-    "photo": "https://example.com/photo.jpg",
-    "description": "Ph.D. in Mathematics...",
-    "email": "jane.smith@ashabhavan.org",
-    "qualifications": ["Ph.D. Mathematics"],
-    "experience": "15 years"
-  }
-}
-```
-
----
-
-### 16. Create Faculty
-
-**POST** `/faculties`
-
-**Description:** Create a new faculty member (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "name": "Dr. New Faculty",
-  "subject": "Science",
-  "photo": "https://example.com/photo.jpg",
-  "description": "Faculty description...",
-  "email": "new.faculty@ashabhavan.org",
-  "qualifications": ["Ph.D. Science"],
-  "experience": "10 years"
-}
-```
-
-**Response (201 Created):**
-
-```json
-{
-  "success": true,
-  "message": "Faculty created successfully",
-  "data": {
-    "id": "new_faculty_id",
-    "name": "Dr. New Faculty",
-    ...
-  }
-}
-```
-
----
-
-### 17. Update Faculty
-
-**PUT** `/faculties/:id`
-
-**Description:** Update a faculty member (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**URL Parameters:**
-
-- `id`: Faculty ID
-
-**Request Body:**
-
-```json
-{
-  "name": "Updated Name",
-  "subject": "Updated Subject",
-  "photo": "https://example.com/new-photo.jpg",
-  "description": "Updated description...",
-  "email": "updated@ashabhavan.org",
-  "qualifications": ["Updated Qualification"],
-  "experience": "20 years"
-}
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "Faculty updated successfully",
-  "data": {...}
-}
-```
-
----
-
-### 18. Delete Faculty
-
-**DELETE** `/faculties/:id`
-
-**Description:** Delete a faculty member (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**URL Parameters:**
-
-- `id`: Faculty ID
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "Faculty deleted successfully"
-}
-```
-
----
-
-### 19. Get Faculty Videos
-
-**GET** `/faculties/videos`
-
-**Description:** Get all faculty videos
-
-**Query Parameters:**
-
-- `facultyId` (optional): Filter by faculty ID
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "videos": [
-      {
-        "id": "video_id_1",
-        "title": "Innovative Teaching Methods",
-        "url": "https://www.youtube.com/embed/...",
-        "facultyId": "faculty_id_1",
-        "description": "Exploring modern teaching methodologies",
-        "createdAt": "2024-01-01T00:00:00.000Z"
-      }
-    ]
-  }
-}
-```
-
----
-
-### 20. Upload Faculty Video
-
-**POST** `/faculties/videos`
-
-**Description:** Upload a new faculty video (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "title": "New Teaching Video",
-  "url": "https://www.youtube.com/embed/...",
-  "facultyId": "faculty_id_1",
-  "description": "Video description..."
-}
-```
-
-**Response (201 Created):**
-
-```json
-{
-  "success": true,
-  "message": "Video uploaded successfully",
-  "data": {
-    "id": "new_video_id",
-    "title": "New Teaching Video",
-    ...
-  }
-}
-```
-
----
-
-## Contact Endpoints
-
-### 21. Get Contact Info
-
-**GET** `/contact`
-
-**Description:** Get contact information
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "data": {
-    "phone": "+91 1234567890",
-    "email": "info@ashabhavan.org",
-    "instagram": "https://instagram.com/ashabhavan",
-    "whatsapp": "https://wa.me/911234567890",
-    "address": "123 Education Street, City, State 123456",
-    "mapLocation": "https://www.google.com/maps/embed?pb=...",
-    "workingHours": {
-      "weekdays": "9:00 AM - 5:00 PM",
-      "saturday": "9:00 AM - 1:00 PM",
-      "sunday": "Closed"
-    }
-  }
-}
-```
-
----
-
-### 22. Update Contact Info
-
-**PUT** `/contact`
-
-**Description:** Update contact information (admin only)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-**Request Body:**
-
-```json
-{
-  "phone": "+91 9876543210",
-  "email": "newemail@ashabhavan.org",
-  "instagram": "https://instagram.com/newhandle",
-  "whatsapp": "https://wa.me/919876543210",
-  "address": "New Address",
-  "mapLocation": "https://www.google.com/maps/embed?pb=...",
-  "workingHours": {
-    "weekdays": "8:00 AM - 6:00 PM",
-    "saturday": "9:00 AM - 2:00 PM",
-    "sunday": "Closed"
-  }
-}
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "Contact info updated successfully",
-  "data": {...}
-}
-```
-
----
-
-### 23. Submit Contact Form
-
-**POST** `/contact/submit`
-
-**Description:** Submit contact form from website
-
-**Request Body:**
-
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "message": "Contact form message..."
-}
-```
-
-**Response (200 OK):**
-
-```json
-{
-  "success": true,
-  "message": "Thank you for your message. We will get back to you soon."
 }
 ```
 

@@ -167,7 +167,7 @@ export default function AdminDashboard() {
     try {
       if (editingItem) {
         // Update existing item (API endpoint to be provided)
-        // For now, we'll use PUT /gallery/:id when available
+        // Update gallery item using PATCH /gallery/:id
         const updateData = new FormData()
         updateData.append('category', formData.category)
         updateData.append('title', formData.title)
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
             headers.Authorization = `Bearer ${adminToken}`
           }
 
-          const response = await axios.put(
+          const response = await axios.patch(
             `${API_BASE_URL}/gallery/${editingItem.id}`,
             updateData,
             { headers }
