@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { useStore } from '../../store/useStore'
 import { API_BASE_URL } from '../../constants'
 import axios from 'axios'
+import Toast, { useToast } from '../../components/Toast'
 
 export default function AdminDashboard() {
   const navigate = useNavigate()
   const { isAdmin, adminToken, logout } = useStore()
+  const { showSuccess, showError } = useToast()
   const [view, setView] = useState('list') // 'list' or 'add'
   const [galleryItems, setGalleryItems] = useState([])
   const [loading, setLoading] = useState(false)
@@ -16,6 +18,11 @@ export default function AdminDashboard() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [editingItem, setEditingItem] = useState(null)
+  const [itemToDelete, setItemToDelete] = useState(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleting, setDeleting] = useState(false)
+  const [toasts, setToasts] = useState([])
+  const [isDragging, setIsDragging] = useState(false)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -74,15 +81,73 @@ export default function AdminDashboard() {
     }
   }, [isAdmin, navigate, fetchGalleryItems])
 
+  // Toast event listeners
+  useEffect(() => {
+    const handleShowToast = event => {
+      setToasts(prev => [...prev, event.detail])
+    }
+
+    const handleRemoveToast = event => {
+      setToasts(prev => prev.filter(toast => toast.id !== event.detail.id))
+    }
+
+    window.addEventListener('show-toast', handleShowToast)
+    window.addEventListener('remove-toast', handleRemoveToast)
+
+    return () => {
+      window.removeEventListener('show-toast', handleShowToast)
+      window.removeEventListener('remove-toast', handleRemoveToast)
+    }
+  }, [])
+
+  const removeToast = id => {
+    setToasts(prev => prev.filter(toast => toast.id !== id))
+  }
+
   const handleImageChange = e => {
     const file = e.target.files[0]
-    if (file) {
+    if (file && file.type.startsWith('image/')) {
       setFormData({ ...formData, image: file })
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result)
       }
       reader.readAsDataURL(file)
+    } else {
+      showError('Please select a valid image file')
+    }
+  }
+
+  const handleDragOver = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+  }
+
+  const handleDrop = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragging(false)
+
+    const files = e.dataTransfer.files
+    if (files && files.length > 0) {
+      const file = files[0]
+      if (file.type.startsWith('image/')) {
+        setFormData({ ...formData, image: file })
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setImagePreview(reader.result)
+        }
+        reader.readAsDataURL(file)
+      } else {
+        showError('Please drop a valid image file')
+      }
     }
   }
 
@@ -125,12 +190,12 @@ export default function AdminDashboard() {
           )
 
           if (response.data.success) {
-            setSuccess('Gallery item updated successfully!')
+            showSuccess('Gallery item updated successfully!')
             resetForm()
             setTimeout(() => {
               fetchGalleryItems()
               setView('list')
-            }, 1500)
+            }, 1000)
           }
         } catch (updateErr) {
           // If update endpoint doesn't exist yet, show message
@@ -161,20 +226,21 @@ export default function AdminDashboard() {
         })
 
         if (response.data.success) {
-          setSuccess('Gallery item uploaded successfully!')
+          showSuccess('Gallery item uploaded successfully!')
           resetForm()
           setTimeout(() => {
             fetchGalleryItems()
             setView('list')
-          }, 1500)
+          }, 1000)
         }
       }
     } catch (err) {
       console.error('Error saving gallery item:', err)
-      setError(
+      const errorMessage =
         err.response?.data?.message ||
-          `Failed to ${editingItem ? 'update' : 'upload'} gallery item. Please try again.`
-      )
+        `Failed to ${editingItem ? 'update' : 'upload'} gallery item. Please try again.`
+      setError(errorMessage)
+      showError(errorMessage)
     } finally {
       setUploading(false)
     }
@@ -191,10 +257,17 @@ export default function AdminDashboard() {
     setView('add')
   }
 
-  const handleDelete = async itemId => {
-    if (!window.confirm('Are you sure you want to delete this gallery item?')) {
-      return
-    }
+  const handleDelete = item => {
+    setItemToDelete(item)
+    setShowDeleteModal(true)
+  }
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return
+
+    setDeleting(true)
+    setError('')
+    setSuccess('')
 
     try {
       const headers = {}
@@ -202,21 +275,53 @@ export default function AdminDashboard() {
         headers.Authorization = `Bearer ${adminToken}`
       }
 
-      const response = await axios.delete(`${API_BASE_URL}/gallery/${itemId}`, { headers })
+      const response = await axios.delete(`${API_BASE_URL}/gallery/${itemToDelete.id}`, {
+        headers,
+      })
 
       if (response.data.success) {
-        setSuccess('Gallery item deleted successfully!')
+        showSuccess('Gallery item deleted successfully!')
+        setShowDeleteModal(false)
+        setItemToDelete(null)
         fetchGalleryItems()
       }
     } catch (err) {
       console.error('Error deleting gallery item:', err)
-      setError(err.response?.data?.message || 'Failed to delete gallery item. Please try again.')
+      const errorMessage =
+        err.response?.data?.message || 'Failed to delete gallery item. Please try again.'
+      setError(errorMessage)
+      showError(errorMessage)
+    } finally {
+      setDeleting(false)
     }
   }
 
-  const handleLogout = () => {
-    logout()
-    navigate('/')
+  const cancelDelete = () => {
+    setShowDeleteModal(false)
+    setItemToDelete(null)
+  }
+
+  const handleLogout = async () => {
+    try {
+      // Call logout API endpoint with Bearer token
+      const headers = {}
+      if (adminToken) {
+        headers.Authorization = `Bearer ${adminToken}`
+      }
+
+      await axios.post(`${API_BASE_URL}/auth/logout`, {}, { headers })
+      showSuccess('Logged out successfully!')
+    } catch (err) {
+      // Even if API call fails, we should still clear local state
+      console.error('Logout API error:', err)
+      showError('Error during logout, but you have been logged out locally.')
+    } finally {
+      // Always clear local state and navigate away
+      setTimeout(() => {
+        logout()
+        navigate('/')
+      }, 500)
+    }
   }
 
   const resetForm = () => {
@@ -377,7 +482,7 @@ export default function AdminDashboard() {
                             <span>Edit</span>
                           </button>
                           <button
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => handleDelete(item)}
                             className="flex-1 flex items-center justify-center space-x-1 px-3 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm"
                           >
                             <Trash2 size={16} />
@@ -433,7 +538,16 @@ export default function AdminDashboard() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Image <span className="text-red-500">*</span>
                   </label>
-                  <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors">
+                  <div
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-lg transition-colors ${
+                      isDragging
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-300 hover:border-blue-400'
+                    }`}
+                  >
                     <div className="space-y-1 text-center w-full">
                       {imagePreview ? (
                         <div className="relative inline-block">
@@ -501,6 +615,86 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {/* Toast Notifications */}
+      <Toast toasts={toasts} removeToast={removeToast} />
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Delete Gallery Item</h3>
+              <button
+                onClick={cancelDelete}
+                disabled={deleting}
+                className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-gray-700 mb-4">
+                Are you sure you want to delete this gallery item? This action cannot be undone.
+              </p>
+              {itemToDelete && (
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={itemToDelete.url || itemToDelete.thumbnail || '/images/placeholder.jpg'}
+                      alt={itemToDelete.title || 'Gallery image'}
+                      className="w-20 h-20 object-cover rounded"
+                      onError={e => {
+                        e.target.src = '/images/placeholder.jpg'
+                      }}
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900">
+                        {itemToDelete.title || 'Untitled'}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Category: {getCategoryLabel(itemToDelete.category)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={cancelDelete}
+                disabled={deleting}
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                disabled={deleting}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              >
+                {deleting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={16} />
+                    <span>Delete</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
