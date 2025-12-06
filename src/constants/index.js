@@ -55,16 +55,17 @@ export const DUMMY_DATA = {
 
   ABOUT: {
     mission:
-      'To provide quality education and holistic development to every student, fostering creativity, critical thinking, and character building. We strive to create an environment where students can discover their potential and become responsible citizens.',
+      'AshaBhavan is dedicated to creating a more equitable society by providing vocational training, skill development, and social welfare support to vulnerable communities, particularly persons with disabilities and women. We provide guidance and vocational training for the holistic growth of physically handicapped young women, offering free education and accommodation while addressing the individual needs of each student.',
     vision:
-      'To be a leading educational institution that nurtures future leaders and responsible citizens. We envision a world where every student has access to quality education and opportunities for growth.',
+      'To be a leading center for vocational training and empowerment, promoting independence, dignity, and rehabilitation for persons with disabilities. We envision a just society that encourages the potential of people with disabilities to become contributing, self-reliant, and dignified individuals in mainstream society.',
     objectives: [
-      'Provide quality education accessible to all',
-      'Foster holistic development of students',
-      'Promote innovation and creativity',
-      'Build strong character and values',
-      'Create a safe and inclusive learning environment',
-      'Encourage community engagement and social responsibility',
+      'Provide quality education academically, vocationally, and spiritually to persons with disabilities',
+      'Create a supportive environment that fosters individual growth, employability, and social inclusion',
+      'Promote holistic developmental opportunities that widen horizons and capacities',
+      'Encourage creativity and self-discovery through various training programs',
+      'Empower disabled youngsters to unlock their potential and achieve all-round development',
+      'Build confidence and provide career support through accessibility and employment placement',
+      "Foster women's independence and dignity through skill development",
     ],
     photos: DUMMY_IMAGES.ABOUT,
   },
@@ -117,12 +118,12 @@ export const DUMMY_DATA = {
     whatsapp: 'https://wa.me/911234567890',
     address: '123 Education Street, City, State 123456, India',
     mapLocation:
-      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1841338846597!2d-73.98825768459418!3d40.75889597932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1234567890',
-    workingHours: {
-      weekdays: '9:00 AM - 5:00 PM',
-      saturday: '9:00 AM - 1:00 PM',
-      sunday: 'Closed',
-    },
+      'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1062.4380081479148!2d76.32606360025486!3d10.234400245653442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0805f36ccc2797%3A0x1e99bc969c2fb7f5!2sAshabhavan%20annamanada!5e1!3m2!1sen!2sin!4v1765029590429!5m2!1sen!2sin',
+    // workingHours: {
+    //   weekdays: '9:00 AM - 5:00 PM',
+    //   saturday: '9:00 AM - 1:00 PM',
+    //   sunday: 'Closed',
+    // },
   },
 }
 
