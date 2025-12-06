@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Play, Image as ImageIcon, BookOpen, Camera } from 'lucide-react'
-import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
+import { X, Play, Image as ImageIcon, BookOpen, Camera, Loader2 } from 'lucide-react'
+import { DUMMY_IMAGES, API_BASE_URL } from '../constants'
+import axios from 'axios'
 
 export default function Gallery() {
-  const displayGallery = DUMMY_DATA.GALLERY
   const [selectedImage, setSelectedImage] = useState(null)
   const [activeTab, setActiveTab] = useState('all')
+  const [galleryItems, setGalleryItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   const tabs = [
     { id: 'all', label: 'All', icon: Camera },
@@ -15,14 +18,69 @@ export default function Gallery() {
     { id: 'photos', label: 'Photos', icon: ImageIcon },
   ]
 
-  const allImages = [
-    ...displayGallery.studentWork.map(img => ({ src: img, category: 'studentWork' })),
-    ...displayGallery.programs.map(img => ({ src: img, category: 'programs' })),
-    ...displayGallery.photos.map(img => ({ src: img, category: 'photos' })),
-  ]
+  useEffect(() => {
+    fetchGalleryItems()
+  }, [])
+
+  const fetchGalleryItems = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const response = await axios.get(`${API_BASE_URL}/gallery`)
+      
+      if (response.data.success) {
+        // Flatten gallery items from all categories
+        const allItems = []
+        
+        if (response.data.data.studentWork) {
+          allItems.push(
+            ...response.data.data.studentWork.map(item => ({
+              src: item.url || item.thumbnail,
+              category: 'studentWork',
+              title: item.title || 'Student Work',
+              id: item.id,
+            }))
+          )
+        }
+        
+        if (response.data.data.programs) {
+          allItems.push(
+            ...response.data.data.programs.map(item => ({
+              src: item.url || item.thumbnail,
+              category: 'programs',
+              title: item.title || 'Program',
+              id: item.id,
+            }))
+          )
+        }
+        
+        if (response.data.data.photos) {
+          allItems.push(
+            ...response.data.data.photos.map(item => ({
+              src: item.url || item.thumbnail,
+              category: 'photos',
+              title: item.title || 'Photo',
+              id: item.id,
+            }))
+          )
+        }
+        
+        setGalleryItems(allItems)
+      }
+    } catch (err) {
+      console.error('Error fetching gallery items:', err)
+      setError('Failed to load gallery items. Please try again later.')
+      // Fallback to empty array
+      setGalleryItems([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const filteredImages =
-    activeTab === 'all' ? allImages : allImages.filter(img => img.category === activeTab)
+    activeTab === 'all'
+      ? galleryItems
+      : galleryItems.filter(img => img.category === activeTab)
 
   return (
     <div id="gallery" className="min-h-screen">
@@ -58,38 +116,83 @@ export default function Gallery() {
           })}
         </div>
 
-        {/* Images Grid */}
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          <AnimatePresence>
-            {filteredImages.map((item, index) => (
-              <motion.div
-                key={`${item.category}-${index}`}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => setSelectedImage(item.src)}
-                className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <Loader2 className="inline-block animate-spin text-blue-600" size={48} />
+            <p className="mt-4 text-gray-600 text-lg">Loading gallery items...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && !loading && (
+          <div className="text-center py-16">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg inline-block">
+              <p className="font-medium">{error}</p>
+              <button
+                onClick={fetchGalleryItems}
+                className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
               >
-                <img
-                  src={item.src || DUMMY_IMAGES.PLACEHOLDER}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-64 object-cover"
-                  onError={e => {
-                    e.target.src = DUMMY_IMAGES.PLACEHOLDER
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                  <ImageIcon
-                    className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                    size={40}
-                  />
-                </div>
+                Try Again
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Images Grid */}
+        {!loading && !error && (
+          <>
+            {filteredImages.length === 0 ? (
+              <div className="text-center py-16">
+                <ImageIcon className="inline-block text-gray-400 mb-4" size={48} />
+                <p className="text-gray-600 text-lg">
+                  No images found in {tabs.find(t => t.id === activeTab)?.label || 'this category'}.
+                </p>
+              </div>
+            ) : (
+              <motion.div
+                layout
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+              >
+                <AnimatePresence mode="wait">
+                  {filteredImages.map((item, index) => (
+                    <motion.div
+                      key={item.id || `${item.category}-${index}`}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      whileHover={{ scale: 1.05 }}
+                      onClick={() => setSelectedImage(item.src)}
+                      className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
+                    >
+                      <img
+                        src={item.src || DUMMY_IMAGES.PLACEHOLDER}
+                        alt={item.title || `Gallery ${index + 1}`}
+                        className="w-full h-64 object-cover"
+                        loading="lazy"
+                        onError={e => {
+                          e.target.src = DUMMY_IMAGES.PLACEHOLDER
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                        <ImageIcon
+                          className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                          size={40}
+                        />
+                      </div>
+                      {item.title && (
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                          <p className="text-white font-medium text-sm truncate">{item.title}</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+            )}
+          </>
+        )}
 
         {/* Image Modal */}
         <AnimatePresence>

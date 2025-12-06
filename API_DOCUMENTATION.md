@@ -138,17 +138,7 @@ Authorization: Bearer <token>
       }
     ],
     "programs": [...],
-    "photos": [...],
-    "videos": [
-      {
-        "id": "video_id_1",
-        "title": "Annual Day",
-        "url": "https://www.youtube.com/embed/...",
-        "thumbnail": "https://example.com/thumbnail.jpg",
-        "category": "programs",
-        "createdAt": "2024-01-01T00:00:00.000Z"
-      }
-    ]
+    "photos": [...]
   },
   "pagination": {
     "page": 1,
