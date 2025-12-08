@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Instagram, MessageCircle, Copy, Check, Send } from 'lucide-react'
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Instagram,
+  Youtube,
+  MessageCircle,
+  Copy,
+  Check,
+  Send,
+} from 'lucide-react'
 import { DUMMY_DATA } from '../constants'
 
 export default function Contact() {
@@ -53,6 +63,12 @@ export default function Contact() {
       label: 'Instagram',
       href: displayContactInfo.instagram,
       color: 'bg-pink-100 text-pink-600 hover:bg-pink-200',
+    },
+    {
+      icon: Youtube,
+      label: 'YouTube',
+      href: displayContactInfo.youtube,
+      color: 'bg-red-100 text-red-600 hover:bg-red-200',
     },
     {
       icon: MessageCircle,
@@ -189,7 +205,9 @@ export default function Contact() {
                   <p className="text-gray-600 mb-4">Send us an email for inquiries and support</p>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <p className="text-sm text-gray-500 mb-1">Email Address</p>
-                    <p className="text-lg font-semibold text-gray-900">{displayContactInfo.email}</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {displayContactInfo.email}
+                    </p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <motion.button
@@ -241,7 +259,9 @@ export default function Contact() {
                   <p className="text-gray-600 mb-4">Chat with us directly on WhatsApp</p>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <p className="text-sm text-gray-500 mb-1">Phone Number</p>
-                    <p className="text-lg font-semibold text-gray-900">{displayContactInfo.phone}</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {displayContactInfo.phone}
+                    </p>
                   </div>
                   <motion.button
                     onClick={handleWhatsApp}

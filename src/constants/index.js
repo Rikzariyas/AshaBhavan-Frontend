@@ -46,10 +46,10 @@ export const DUMMY_IMAGES = {
 // Dummy Data Constants
 export const DUMMY_DATA = {
   HEAD_OF_INSTITUTE: {
-    name: 'Dr. John Doe',
-    title: 'Head of Institute',
+    name: 'Sr. Ambuja',
+    title: 'Director Ashabhavan',
     description:
-      'With over 20 years of experience in education, Dr. John Doe has been leading our institution with dedication and vision. His commitment to excellence and student success has shaped our institution into what it is today.',
+      'Director is in charge of the personnel and servants. Director is responsible for their admis-sion, appointment, training arrangements and disciplinary actions. She is the director of the trainees, resposible for their admission, training arrangements, rehabilitation, discipline and all disciplinary actions. She is authorised to take disciplinary action against the employees, make enquiries and it found necessary, to terminate the service or dismiss the employees. She shall do so only after getting the sanction of the President. An employee who is dismissed or whose service are terminated may appeal to the governing body whose decision shall be final.',
     photo: DUMMY_IMAGES.HEAD_OF_INSTITUTE,
   },
 
@@ -83,7 +83,6 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[0],
       description:
         'Hands-on skills training includes mastery in garment construction, alteration and repair techniques. Precision and attention to detail help develop fine motor skills. Entrepreneurial opportunities to start their own tailoring business or work in garment manufacturing.',
-  
     },
     {
       id: 2,
@@ -92,7 +91,6 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[1],
       description:
         'Embroidery has its traditional importance. It can be calming and meditative, promoting relaxation and focus. Adds value to garments with attractive stitching patterns. Helps students achieve self-sufficiency in life and secure jobs in private and public sectors.',
-    
     },
     {
       id: 3,
@@ -101,7 +99,6 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[2],
       description:
         'Government recognized course under Kerala Technical Education. Students are engaged with regular classes, industrial visits, internships, and project works. Develop skills in garment construction, textile science, and fashion illustration. Career opportunities in fashion designing and styling.',
-   
     },
     {
       id: 4,
@@ -110,17 +107,16 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[3],
       description:
         'Our students are very much interested in computer courses such as MS Office, DTP, English and Malayalam Typing. We are preparing them for exams. Our computer courses have recognition from the Indian Computer Academy.',
-   
     },
   ],
 
-
   CONTACT: {
-    phone: '+91 1234567890',
-    email: 'info@ashabhavan.org',
-    instagram: 'https://instagram.com/ashabhavan',
+    phone: '+91 9496719471',
+    email: 'ashabhavandirector@gmail.com',
+    instagram: 'https://www.instagram.com/ashabhavanannamanada?igsh=M25naXhtaTliZmdw',
+    youtube: 'https://youtube.com/@ashabhavanannamanada4633?si=-RsRPhTCUmfP3syA',
     whatsapp: 'https://wa.me/911234567890',
-    address: '123 Education Street, City, State 123456, India',
+    address: 'Ashabhavan, Annamanada P.O, Thrissur, Kerala, Pin. 680741',
     mapLocation:
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1841338846597!2d-73.98825768459418!3d40.75889597932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1234567890',
     workingHours: {

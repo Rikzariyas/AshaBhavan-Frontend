@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Mail, Phone, MapPin, Instagram, MessageCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Instagram, Youtube, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { DUMMY_DATA } from '../constants'
 
@@ -7,7 +7,7 @@ export default function Footer() {
   const contactInfo = DUMMY_DATA.CONTACT
   const location = useLocation()
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = sectionId => {
     const element = document.getElementById(sectionId)
     if (element) {
       const offset = 80 // Navbar height
@@ -42,8 +42,7 @@ export default function Footer() {
           >
             <h3 className="text-xl font-bold mb-4">AshaBhavan Trust</h3>
             <p className="text-gray-400">
-              Dedicated to providing quality education and holistic development
-              to every student.
+              Dedicated to providing quality education and holistic development to every student.
             </p>
           </motion.div>
 
@@ -57,45 +56,45 @@ export default function Footer() {
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link 
-                  to="/" 
-                  onClick={(e) => handleLinkClick(e, 'home')}
+                <Link
+                  to="/"
+                  onClick={e => handleLinkClick(e, 'home')}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Home
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/about" 
-                  onClick={(e) => handleLinkClick(e, 'about')}
+                <Link
+                  to="/about"
+                  onClick={e => handleLinkClick(e, 'about')}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   About
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/courses" 
-                  onClick={(e) => handleLinkClick(e, 'courses')}
+                <Link
+                  to="/courses"
+                  onClick={e => handleLinkClick(e, 'courses')}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Courses
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/gallery" 
-                  onClick={(e) => handleLinkClick(e, 'gallery')}
+                <Link
+                  to="/gallery"
+                  onClick={e => handleLinkClick(e, 'gallery')}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Gallery
                 </Link>
               </li>
               <li>
-                <Link 
-                  to="/contact" 
-                  onClick={(e) => handleLinkClick(e, 'contact')}
+                <Link
+                  to="/contact"
+                  onClick={e => handleLinkClick(e, 'contact')}
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Contact
@@ -144,6 +143,14 @@ export default function Footer() {
                 className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <Instagram size={20} />
+              </a>
+              <a
+                href={contactInfo.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                <Youtube size={20} />
               </a>
               <a
                 href={contactInfo.whatsapp}
