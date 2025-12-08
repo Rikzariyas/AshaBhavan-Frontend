@@ -3,6 +3,7 @@ import About from './About'
 import Gallery from './Gallery'
 import Courses from './Courses'
 import Contact from './Contact'
+import VideoSection from './VideoSection'
 
 export default function SinglePage() {
   return (
@@ -11,6 +12,7 @@ export default function SinglePage() {
       <About />
       <Courses />
       <Gallery />
+      <VideoSection />
       <Contact />
     </>
   )

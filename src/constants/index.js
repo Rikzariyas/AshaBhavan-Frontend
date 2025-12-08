@@ -114,8 +114,9 @@ export const DUMMY_DATA = {
   CONTACT: {
     phone: '+91 9496719471',
     email: 'ashabhavandirector@gmail.com',
-    instagram: 'https://instagram.com/ashabhavan',
-    whatsapp: 'https://wa.me/+91 9496719471',
+    instagram: 'https://www.instagram.com/ashabhavanannamanada?igsh=M25naXhtaTliZmdw',
+    youtube: 'https://youtube.com/@ashabhavanannamanada4633?si=-RsRPhTCUmfP3syA',
+    whatsapp: 'https://wa.me/919496719471',
     address: 'Ashabhavan, Annamanada P.O, Thrissur, Kerala, Pin. 680741',
     mapLocation:
       'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1062.4380081479148!2d76.32606360025486!3d10.234400245653442!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0805f36ccc2797%3A0x1e99bc969c2fb7f5!2sAshabhavan%20annamanada!5e1!3m2!1sen!2sin!4v1765029590429!5m2!1sen!2sin',

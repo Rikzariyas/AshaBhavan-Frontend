@@ -27,9 +27,9 @@ export default function About() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 md:p-12">
+          <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-2xl p-8 md:p-12">
             <div className="flex items-start space-x-4 mb-6">
-              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 bg-yellow-400 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Target className="text-white" size={24} />
               </div>
               <div>
@@ -47,9 +47,9 @@ export default function About() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-8 md:p-12">
+          <div className="bg-gradient-to-r from-amber-50 to-amber-100 rounded-2xl p-8 md:p-12">
             <div className="flex items-start space-x-4 mb-6">
-              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 bg-amber-500 rounded-lg flex items-center justify-center flex-shrink-0">
                 <Eye className="text-white" size={24} />
               </div>
               <div>

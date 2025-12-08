@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Mail, Phone, MapPin, Instagram, MessageCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Instagram, Youtube, MessageCircle } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { DUMMY_DATA } from '../constants'
 
@@ -143,6 +143,14 @@ export default function Footer() {
                 className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <Instagram size={20} />
+              </a>
+              <a
+                href={contactInfo.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                <Youtube size={20} />
               </a>
               <a
                 href={contactInfo.whatsapp}

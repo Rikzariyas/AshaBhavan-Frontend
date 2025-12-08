@@ -47,19 +47,27 @@ export default function Home() {
         >
           <div className="flex flex-col md:flex-row items-center gap-8">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 30, rotate: -6, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+              transition={{ type: 'spring', stiffness: 110, damping: 14 }}
+              whileHover={{ scale: 1.04, rotate: 0 }}
               viewport={{ once: true }}
-              className="flex-shrink-0"
+              className="flex-shrink-0 portrait-entrance projective-wrapper"
             >
-              <img
-                src={displayHeadOfInstitute.photo || DUMMY_IMAGES.HEAD_OF_INSTITUTE}
-                alt={displayHeadOfInstitute.name}
-                className="w-64 h-64 rounded-full object-cover shadow-lg"
-                onError={e => {
-                  e.target.src = DUMMY_IMAGES.HEAD_OF_INSTITUTE
-                }}
-              />
+              <motion.div
+                whileHover={{ rotateY: 8, rotateX: -4, translateZ: 6 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+                className="rounded-full overflow-hidden"
+              >
+                <img
+                  src={displayHeadOfInstitute.photo || DUMMY_IMAGES.HEAD_OF_INSTITUTE}
+                  alt={displayHeadOfInstitute.name}
+                  className="w-64 h-64 rounded-full object-cover shadow-lg animate-float projective-img"
+                  onError={e => {
+                    e.target.src = DUMMY_IMAGES.HEAD_OF_INSTITUTE
+                  }}
+                />
+              </motion.div>
             </motion.div>
             <div className="flex-1 text-center md:text-left">
               <motion.h2

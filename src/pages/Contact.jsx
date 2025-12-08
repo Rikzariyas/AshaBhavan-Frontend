@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Instagram, MessageCircle, Copy, Check, Send } from 'lucide-react'
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Instagram,
+  Youtube,
+  MessageCircle,
+  Copy,
+  Check,
+  Send,
+} from 'lucide-react'
 import { DUMMY_DATA } from '../constants'
 
 export default function Contact() {
@@ -53,6 +63,12 @@ export default function Contact() {
       label: 'Instagram',
       href: displayContactInfo.instagram,
       color: 'bg-pink-100 text-pink-600 hover:bg-pink-200',
+    },
+    {
+      icon: Youtube,
+      label: 'YouTube',
+      href: displayContactInfo.youtube,
+      color: 'bg-red-100 text-red-600 hover:bg-red-200',
     },
     {
       icon: MessageCircle,
