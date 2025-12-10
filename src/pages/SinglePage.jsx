@@ -1,4 +1,5 @@
 import Home from './Home'
+import Introduction from './Introduction'
 import About from './About'
 import Management from './Management'
 import DirectorProfile from './DirectorProfile'
@@ -12,6 +13,7 @@ export default function SinglePage() {
   return (
     <>
       <Home />
+      <Introduction />
       <About />
       <DirectorProfile />
       <Management />
