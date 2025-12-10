@@ -76,6 +76,13 @@ export const DUMMY_DATA = {
     photos: DUMMY_IMAGES.GALLERY.PHOTOS,
   },
 
+  MANAGEMENT: [],
+  MANAGEMENT_TEAM: {
+    groupPhoto: '/images/management-team.jpg',
+    description:
+      'Our management team works together to ensure smooth operations, strategic planning, and community outreach. They coordinate programs, manage resources, and support students and staff across all initiatives.',
+  },
+
   COURSES: [
     {
       id: 1,

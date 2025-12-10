@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Target, Eye, CheckCircle } from 'lucide-react'
+import { Target, Eye, CheckCircle, GraduationCap, Users, Award, Heart } from 'lucide-react'
 import { DUMMY_IMAGES, DUMMY_DATA } from '../constants'
 
 export default function About() {
@@ -92,34 +92,65 @@ export default function About() {
           </div>
         </motion.section>
 
-        {/* Photos Section */}
+        {/* Why Choose Us Section */}
         <motion.section
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          className="mb-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Our Campus</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {displayAboutData.photos.map((photo, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="overflow-hidden rounded-xl shadow-lg"
-              >
-                <img
-                  src={photo || DUMMY_IMAGES.PLACEHOLDER}
-                  alt={`Campus ${index + 1}`}
-                  className="w-full h-64 object-cover"
-                  onError={e => {
-                    e.target.src = DUMMY_IMAGES.PLACEHOLDER
-                  }}
-                />
-              </motion.div>
-            ))}
+          <div className="max-w-7xl mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
+            >
+              Why Choose Us
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  icon: GraduationCap,
+                  title: 'Quality Education',
+                  description: 'Comprehensive curriculum designed for holistic development',
+                },
+                {
+                  icon: Users,
+                  title: 'Expert Courses',
+                  description: 'Comprehensive range of educational courses',
+                },
+                {
+                  icon: Award,
+                  title: 'Excellence',
+                  description: 'Commitment to academic and personal excellence',
+                },
+                {
+                  icon: Heart,
+                  title: 'Care & Support',
+                  description: 'Nurturing environment for every student',
+                },
+              ].map((feature, index) => {
+                const Icon = feature.icon
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -5 }}
+                    className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-asha-pink/20 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="text-asha-green" size={24} />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                    <p className="text-gray-600">{feature.description}</p>
+                  </motion.div>
+                )
+              })}
+            </div>
           </div>
         </motion.section>
       </div>
