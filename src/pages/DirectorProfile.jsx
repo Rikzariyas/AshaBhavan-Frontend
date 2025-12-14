@@ -27,14 +27,14 @@ export default function DirectorProfile() {
               transition={{ type: 'spring', stiffness: 200, damping: 18 }}
               className="rounded-full overflow-hidden"
             >
-              <img
-                src={displayHeadOfInstitute.photo || DUMMY_IMAGES.HEAD_OF_INSTITUTE}
-                alt={displayHeadOfInstitute.name}
-                className="w-64 h-64 rounded-full object-cover shadow-lg animate-float projective-img"
-                onError={e => {
-                  e.target.src = DUMMY_IMAGES.HEAD_OF_INSTITUTE
-                }}
-              />
+                <img
+                  src={displayHeadOfInstitute.photo || DUMMY_IMAGES.HEAD_OF_INSTITUTE}
+                  alt={displayHeadOfInstitute.name}
+                  className="w-64 h-64 rounded-full object-cover object-top shadow-lg animate-float projective-img"
+                  onError={e => {
+                    e.target.src = DUMMY_IMAGES.HEAD_OF_INSTITUTE
+                  }}
+                />
             </motion.div>
           </motion.div>
           <div className="flex-1 text-center md:text-left">

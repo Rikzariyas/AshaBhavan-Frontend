@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Play, Image as ImageIcon, BookOpen, Camera, Loader2 } from 'lucide-react'
-import { DUMMY_IMAGES, API_BASE_URL } from '../constants'
+import { DUMMY_IMAGES, DUMMY_DATA, API_BASE_URL } from '../constants'
 import axios from 'axios'
 
 export default function Gallery() {
@@ -69,9 +69,40 @@ export default function Gallery() {
       }
     } catch (err) {
       console.error('Error fetching gallery items:', err)
-      setError('Failed to load gallery items. Please try again later.')
-      // Fallback to empty array
-      setGalleryItems([])
+      // Fallback to dummy data
+      const dummyItems = []
+      
+      if (DUMMY_DATA.GALLERY.STUDENT_WORK) {
+        dummyItems.push(
+          ...DUMMY_DATA.GALLERY.STUDENT_WORK.map((src, i) => ({
+             src,
+             category: 'studentWork',
+             title: 'Student Work',
+             id: `sw-${i}`,
+          }))
+        )
+      }
+      if (DUMMY_DATA.GALLERY.PROGRAMS) {
+        dummyItems.push(
+          ...DUMMY_DATA.GALLERY.PROGRAMS.map((src, i) => ({
+             src,
+             category: 'programs',
+             title: 'Program',
+             id: `pr-${i}`,
+          }))
+        )
+      }
+      if (DUMMY_DATA.GALLERY.PHOTOS) {
+        dummyItems.push(
+          ...DUMMY_DATA.GALLERY.PHOTOS.map((src, i) => ({
+             src,
+             category: 'photos',
+             title: 'Photo',
+             id: `ph-${i}`,
+          }))
+        )
+      }
+      setGalleryItems(dummyItems)
     } finally {
       setLoading(false)
     }

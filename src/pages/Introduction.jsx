@@ -2,12 +2,18 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DUMMY_IMAGES } from '../constants'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import AnimatedFlower from '../components/AnimatedFlower'
 
 export default function Introduction() {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+      {/* Yellow Spinning Flower - Right Side */}
+      <div className="absolute -top-10 -right-10 z-10 hidden md:block">
+        <AnimatedFlower size={120} color="#FACC15" opacity={0.9} duration={8} />
+      </div>
+
       <div className="flex flex-col md:flex-row items-start gap-12">
         {/* Description - Left Side */}
         <motion.div
@@ -72,7 +78,7 @@ export default function Introduction() {
         >
           <div className="rounded-2xl overflow-hidden shadow-xl">
             <img
-              src={DUMMY_IMAGES.PLACEHOLDER}
+              src={DUMMY_IMAGES.INTRODUCTION}
               alt="Welcome to AshaBhavan"
               className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
               onError={e => {

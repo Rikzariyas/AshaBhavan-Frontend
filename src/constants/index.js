@@ -15,7 +15,8 @@ export const API_ENDPOINTS = {
 // Dummy Images - Replace with actual URLs later
 export const DUMMY_IMAGES = {
   SLIDER: ['/images/slider/slider-1.jpg', '/images/slider/slider-2.jpg'],
-  HEAD_OF_INSTITUTE: '/images/head-of-institute.png',
+  HEAD_OF_INSTITUTE: '/images/head-of-institute.jpg',
+  INTRODUCTION: '/images/introduction.jpg',
   ABOUT: ['/images/about/about-1.jpg', '/images/about/about-2.jpg', '/images/about/about-3.jpg'],
   GALLERY: {
     STUDENT_WORK: [
@@ -46,10 +47,10 @@ export const DUMMY_IMAGES = {
 // Dummy Data Constants
 export const DUMMY_DATA = {
   HEAD_OF_INSTITUTE: {
-    name: 'Sr. Ambuja',
-    title: 'Director Ashabhavan',
+    name: 'Rev. Sr. Tresa Joseph',
+    title: 'President Ashabhavan',
     description:
-      'Director is in charge of the personnel and servants. Director is responsible for their admis-sion, appointment, training arrangements and disciplinary actions. She is the director of the trainees, resposible for their admission, training arrangements, rehabilitation, discipline and all disciplinary actions. She is authorised to take disciplinary action against the employees, make enquiries and it found necessary, to terminate the service or dismiss the employees. She shall do so only after getting the sanction of the President. An employee who is dismissed or whose service are terminated may appeal to the governing body whose decision shall be final.',
+      'President - Shall be the administrative head of Ashabhavn. She shall usually preside over the meetings of the Executive/Governing Body and the General Body meetings. She shall ordinary direct secretary to call the Governing Body whenever necessary and expedient. The president shall super the works of all other office bearers, staff and shall inspect all the institutions, works, projects schemes conducted, supported, aided, subsidised or financed by Ashabhavan whenever she deen and when emergencies arise. She shall arrange for an audit of their financial accounts',
     photo: DUMMY_IMAGES.HEAD_OF_INSTITUTE,
   },
 
@@ -80,7 +81,7 @@ export const DUMMY_DATA = {
   MANAGEMENT_TEAM: {
     groupPhoto: '/images/management-team.jpg',
     description:
-      'Our management team works together to ensure smooth operations, strategic planning, and community outreach. They coordinate programs, manage resources, and support students and staff across all initiatives.',
+      "The managing  committee as the governing body (board of directors) is the Apex body responsible for the overall governance and strategic direction of asha Bhavan. Their role is collective and focus on ensuring the institution sustained ability to full fill it's mission.That term asha bhavan management generally refers to the administration and operation of the institution that provides shelter protection and services to the youngsters especially ladies above 18 who have special needs",
   },
 
   COURSES: [
