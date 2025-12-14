@@ -9,8 +9,8 @@ export default function Introduction() {
 
   return (
     <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-      {/* Yellow Spinning Flower - Right Side */}
-      <div className="absolute -top-10 -right-10 z-10 hidden md:block">
+      {/* Small Yellow Spinning Flower - Right Side */}
+      <div className="absolute top-12 -right-6 z-10">
         <AnimatedFlower size={120} color="#FACC15" opacity={0.9} duration={8} />
       </div>
 
