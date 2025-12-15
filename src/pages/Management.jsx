@@ -17,7 +17,7 @@ export default function Management() {
         viewport={{ once: true }}
         className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8"
       >
-        Meet Our Management
+        Management of Ashabhavan
       </motion.h2>
 
       {/* Team: group photo on left, description + list on right */}
@@ -27,19 +27,10 @@ export default function Management() {
         viewport={{ once: true }}
         className="bg-white rounded-2xl shadow-lg p-6 mb-8"
       >
-        <div className="flex flex-col md:flex-row items-start gap-6">
-          <div className="w-full md:w-1/2">
-            <img
-              src={teamInfo.groupPhoto || DUMMY_IMAGES.PLACEHOLDER}
-              alt="Management Team"
-              className="w-full h-72 object-cover rounded-xl shadow"
-              onError={e => (e.target.src = DUMMY_IMAGES.PLACEHOLDER)}
-            />
-          </div>
-
-          <div className="w-full md:w-1/2">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Our Management Team</h3>
-            <p className="text-gray-600 mb-4">{teamInfo.description}</p>
+        <div className="flex flex-col items-start gap-6">
+          <div className="w-full">
+          
+            <p className="text-gray-600 mb-4 text-justify">{teamInfo.description}</p>
 
             <div className="space-y-4">
               {others.map((member, idx) => (

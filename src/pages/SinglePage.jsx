@@ -8,6 +8,7 @@ import Courses from './Courses'
 import Gallery from './Gallery'
 import Contact from './Contact'
 import VideoSection from './VideoSection'
+import ManagementPhotos from './ManagementPhotos'
 
 export default function SinglePage() {
   return (
@@ -15,8 +16,9 @@ export default function SinglePage() {
       <Home />
       <Introduction />
       <About />
-      <DirectorProfile />
       <Management />
+      <DirectorProfile />
+      <ManagementPhotos />
       <Campus />
       <Courses />
       <Gallery />
