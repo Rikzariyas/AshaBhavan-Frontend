@@ -19,12 +19,21 @@ export default function StudentList() {
     try {
       // Try to fetch from API
       const response = await axios.get(`${API_BASE_URL}/students`)
-      if (response.data.success) {
+      console.log('Student API response:', response.data)
+      
+      if (response.data.success && response.data.data && response.data.data.length > 0) {
+        // Use API data if available
+        console.log('Using API student data:', response.data.data)
         setStudents(response.data.data)
+      } else {
+        // Fallback to dummy data if API returns empty or no data
+        console.log('API returned no students, using dummy data')
+        setStudents(DUMMY_DATA.STUDENTS)
       }
     } catch (err) {
       console.error('Error fetching students:', err)
-      // Fallback to dummy data
+      console.log('API error, using dummy data as fallback')
+      // Fallback to dummy data on error
       setStudents(DUMMY_DATA.STUDENTS)
     } finally {
       setLoading(false)

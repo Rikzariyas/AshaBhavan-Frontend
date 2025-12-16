@@ -10,6 +10,11 @@ export const API_ENDPOINTS = {
   EDIT_GALLERY_ITEM: '/gallery/:id',
   UPLOAD_GALLERY_IMAGE: '/gallery/upload',
   DELETE_GALLERY_IMAGE: '/gallery/:id',
+  // Students
+  GET_STUDENTS: '/students',
+  CREATE_STUDENT: '/students',
+  UPDATE_STUDENT: '/students/:id',
+  DELETE_STUDENT: '/students/:id',
 }
 
 // Dummy Images - Replace with actual URLs later
