@@ -48,9 +48,12 @@ export default function Navbar() {
     setIsOpen(false)
   }
 
-  const handleNavClick = (e, sectionId) => {
+  const handleNavClick = (e, sectionId, isPage) => {
     e.preventDefault()
-    if (location.pathname === '/') {
+    if (isPage) {
+      // Navigate to a separate page
+      window.location.href = `/${sectionId}`
+    } else if (location.pathname === '/') {
       scrollToSection(sectionId)
     } else {
       // Navigate to home with hash, then scroll
@@ -62,6 +65,7 @@ export default function Navbar() {
     { path: '/', sectionId: 'home', label: 'Home', icon: Home },
     { path: '/about', sectionId: 'about', label: 'About', icon: Info },
     { path: '/courses', sectionId: 'courses', label: 'Courses', icon: BookOpen },
+    { path: '/students', sectionId: 'students', label: 'Students', icon: Users, isPage: true },
     { path: '/gallery', sectionId: 'gallery', label: 'Gallery', icon: Images },
     { path: '/contact', sectionId: 'contact', label: 'Contact', icon: Phone },
   ]
@@ -112,7 +116,7 @@ export default function Navbar() {
               return (
                 <button
                   key={item.path}
-                  onClick={e => handleNavClick(e, item.sectionId)}
+                  onClick={e => handleNavClick(e, item.sectionId, item.isPage)}
                   className={`flex items-center space-x-1 px-4 py-2 rounded-lg transition-colors ${
                     isActive
                       ? 'bg-asha-green text-white'
@@ -164,7 +168,7 @@ export default function Navbar() {
                 return (
                   <button
                     key={item.path}
-                    onClick={e => handleNavClick(e, item.sectionId)}
+                    onClick={e => handleNavClick(e, item.sectionId, item.isPage)}
                     className={`w-full flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors text-left ${
                       isActive
                         ? 'bg-asha-green text-white'

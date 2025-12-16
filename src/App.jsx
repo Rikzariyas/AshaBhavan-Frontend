@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import SinglePage from './pages/SinglePage'
+import StudentList from './pages/StudentList'
 import AdminLogin from './pages/Admin/Login'
 import AdminDashboard from './pages/Admin/Dashboard'
 import { useStore } from './store/useStore'
@@ -57,6 +58,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<SinglePage />} />
+            <Route path="/students" element={<StudentList />} />
             <Route path="/about" element={<Navigate to="/#about" replace />} />
             <Route path="/gallery" element={<Navigate to="/#gallery" replace />} />
             <Route path="/courses" element={<Navigate to="/#courses" replace />} />

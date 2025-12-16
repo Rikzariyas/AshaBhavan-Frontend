@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Play, Image as ImageIcon, BookOpen, Camera, Loader2 } from 'lucide-react'
+import { X, Play, Image as ImageIcon, BookOpen, Camera, Loader2, Video } from 'lucide-react'
 import { DUMMY_IMAGES, DUMMY_DATA, API_BASE_URL } from '../constants'
 import axios from 'axios'
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null)
+  const [selectedVideo, setSelectedVideo] = useState(null)
   const [activeTab, setActiveTab] = useState('all')
   const [galleryItems, setGalleryItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -16,6 +17,7 @@ export default function Gallery() {
     { id: 'studentWork', label: 'Student Work', icon: BookOpen },
     { id: 'programs', label: 'Programs', icon: Play },
     { id: 'photos', label: 'Photos', icon: ImageIcon },
+    { id: 'videos', label: 'Videos', icon: Video },
   ]
 
   useEffect(() => {
@@ -61,6 +63,20 @@ export default function Gallery() {
               category: 'photos',
               title: item.title || 'Photo',
               id: item.id,
+              type: 'image',
+            }))
+          )
+        }
+        
+        if (response.data.data.videos) {
+          allItems.push(
+            ...response.data.data.videos.map(item => ({
+              src: item.thumbnail,
+              category: 'videos',
+              title: item.title || 'Video',
+              id: item.id,
+              youtubeId: item.youtubeId,
+              type: 'video',
             }))
           )
         }
@@ -99,6 +115,19 @@ export default function Gallery() {
              category: 'photos',
              title: 'Photo',
              id: `ph-${i}`,
+             type: 'image',
+          }))
+        )
+      }
+      if (DUMMY_DATA.GALLERY.VIDEOS) {
+        dummyItems.push(
+          ...DUMMY_DATA.GALLERY.VIDEOS.map((video, i) => ({
+             src: video.thumbnail,
+             category: 'videos',
+             title: video.title,
+             id: video.id,
+             youtubeId: video.youtubeId,
+             type: 'video',
           }))
         )
       }
@@ -194,7 +223,13 @@ export default function Gallery() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
                       whileHover={{ scale: 1.05 }}
-                      onClick={() => setSelectedImage(item.src)}
+                      onClick={() => {
+                        if (item.type === 'video') {
+                          setSelectedVideo(item)
+                        } else {
+                          setSelectedImage(item.src)
+                        }
+                      }}
                       className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
                     >
                       <img
@@ -207,10 +242,20 @@ export default function Gallery() {
                         }}
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                        <ImageIcon
-                          className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                          size={40}
-                        />
+                        {item.type === 'video' ? (
+                          <div className="flex flex-col items-center">
+                            <Play
+                              className="text-white opacity-100 transition-opacity drop-shadow-lg"
+                              size={60}
+                              fill="white"
+                            />
+                          </div>
+                        ) : (
+                          <ImageIcon
+                            className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                            size={40}
+                          />
+                        )}
                       </div>
                       {item.title && (
                         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
@@ -252,6 +297,46 @@ export default function Gallery() {
                 className="max-w-full max-h-full object-contain"
                 onClick={e => e.stopPropagation()}
               />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Video Modal */}
+        <AnimatePresence>
+          {selectedVideo && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+              onClick={() => setSelectedVideo(null)}
+            >
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute top-4 right-4 p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors z-10"
+                onClick={() => setSelectedVideo(null)}
+              >
+                <X size={24} className="text-white" />
+              </motion.button>
+              <motion.div
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.9 }}
+                className="w-full max-w-5xl aspect-video"
+                onClick={e => e.stopPropagation()}
+              >
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`}
+                  title={selectedVideo.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="rounded-lg"
+                ></iframe>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

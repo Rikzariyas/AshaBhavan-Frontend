@@ -42,6 +42,13 @@ export const DUMMY_IMAGES = {
     '/images/courses/Computer Course.png',
   ],
   PLACEHOLDER: '/images/placeholder.jpg',
+  STUDENTS: [
+    '/images/students/student-1.jpg',
+    '/images/students/student-2.jpg',
+    '/images/students/student-3.jpg',
+    '/images/students/student-4.jpg',
+    '/images/students/student-5.jpg',
+  ],
 }
 
 // Dummy Data Constants
@@ -75,6 +82,39 @@ export const DUMMY_DATA = {
     studentWork: DUMMY_IMAGES.GALLERY.STUDENT_WORK,
     programs: DUMMY_IMAGES.GALLERY.PROGRAMS,
     photos: DUMMY_IMAGES.GALLERY.PHOTOS,
+    STUDENT_WORK: DUMMY_IMAGES.GALLERY.STUDENT_WORK,
+    PROGRAMS: DUMMY_IMAGES.GALLERY.PROGRAMS,
+    PHOTOS: DUMMY_IMAGES.GALLERY.PHOTOS,
+    VIDEOS: [
+      // TO ADD YOUR YOUTUBE VIDEOS:
+      // 1. Go to: https://www.youtube.com/@ashabhavanannamanada4633/videos
+      // 2. Click on a video
+      // 3. Copy the video ID from the URL (the part after "v=")
+      //    Example: https://www.youtube.com/watch?v=ABC123XYZ -> video ID is "ABC123XYZ"
+      // 4. Replace the youtubeId below with your actual video ID
+      // 5. The thumbnail will automatically update based on the video ID
+      // 6. Update the title to match your video's title
+      
+      {
+        id: 'vid-1',
+        title: 'Asha Bhavan Introduction', // Update with your video title
+        youtubeId: 'REPLACE_WITH_YOUR_VIDEO_ID', // Get from YouTube video URL
+        thumbnail: 'https://img.youtube.com/vi/REPLACE_WITH_YOUR_VIDEO_ID/maxresdefault.jpg',
+      },
+      {
+        id: 'vid-2',
+        title: 'Student Activities', // Update with your video title
+        youtubeId: 'REPLACE_WITH_YOUR_VIDEO_ID', // Get from YouTube video URL
+        thumbnail: 'https://img.youtube.com/vi/REPLACE_WITH_YOUR_VIDEO_ID/maxresdefault.jpg',
+      },
+      {
+        id: 'vid-3',
+        title: 'Annual Day Celebration', // Update with your video title
+        youtubeId: 'REPLACE_WITH_YOUR_VIDEO_ID', // Get from YouTube video URL
+        thumbnail: 'https://img.youtube.com/vi/REPLACE_WITH_YOUR_VIDEO_ID/maxresdefault.jpg',
+      },
+      // Add more videos by copying the structure above
+    ],
   },
 
   MANAGEMENT: [],
@@ -116,6 +156,44 @@ export const DUMMY_DATA = {
       photo: DUMMY_IMAGES.COURSES[3],
       description:
         'Our students are very much interested in computer courses such as MS Office, DTP, English and Malayalam Typing. We are preparing them for exams. Our computer courses have recognition from the Indian Computer Academy.',
+    },
+  ],
+
+  STUDENTS: [
+    {
+      id: 1,
+      name: 'Priya Sharma',
+      dateOfBirth: '2000-05-15',
+      joiningDate: '2023-06-01',
+      photo: DUMMY_IMAGES.STUDENTS[0],
+    },
+    {
+      id: 2,
+      name: 'Anjali Menon',
+      dateOfBirth: '1999-08-22',
+      joiningDate: '2023-06-01',
+      photo: DUMMY_IMAGES.STUDENTS[1],
+    },
+    {
+      id: 3,
+      name: 'Kavya Krishnan',
+      dateOfBirth: '2001-03-10',
+      joiningDate: '2023-07-15',
+      photo: DUMMY_IMAGES.STUDENTS[2],
+    },
+    {
+      id: 4,
+      name: 'Meera Nair',
+      dateOfBirth: '2000-11-28',
+      joiningDate: '2023-08-01',
+      photo: DUMMY_IMAGES.STUDENTS[3],
+    },
+    {
+      id: 5,
+      name: 'Lakshmi Pillai',
+      dateOfBirth: '1998-12-05',
+      joiningDate: '2023-06-15',
+      photo: DUMMY_IMAGES.STUDENTS[4],
     },
   ],
 
