@@ -18,24 +18,35 @@ export default function StudentList() {
     setLoading(true)
     setError('')
     try {
-      // Try to fetch from API
+      // Fetch from API
       const response = await axios.get(`${API_BASE_URL}/students`)
       console.log('Student API response:', response.data)
 
-      if (response.data.success && response.data.data && response.data.data.length > 0) {
-        // Use API data if available
-        console.log('Using API student data:', response.data.data)
-        setStudents(response.data.data)
+      // Handle API response - check for success and data array
+      if (response.data && response.data.success) {
+        const apiStudents = response.data.data || []
+        if (Array.isArray(apiStudents)) {
+          console.log('Using API student data:', apiStudents)
+          setStudents(apiStudents)
+        } else {
+          console.error('API returned invalid data format')
+          setError('Invalid data format from server')
+          setStudents([])
+        }
+      } else if (response.data && Array.isArray(response.data)) {
+        // Handle case where API returns array directly
+        console.log('Using API student data (direct array):', response.data)
+        setStudents(response.data)
       } else {
-        // Fallback to dummy data if API returns empty or no data
-        console.log('API returned no students, using dummy data')
-        setStudents(DUMMY_DATA.STUDENTS)
+        console.log('API returned no students')
+        setStudents([])
       }
     } catch (err) {
       console.error('Error fetching students:', err)
-      console.log('API error, using dummy data as fallback')
-      // Fallback to dummy data on error
-      setStudents(DUMMY_DATA.STUDENTS)
+      const errorMessage =
+        err.response?.data?.message || err.message || 'Failed to load students. Please try again.'
+      setError(errorMessage)
+      setStudents([])
     } finally {
       setLoading(false)
     }
@@ -83,7 +94,7 @@ export default function StudentList() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-pink-50 pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
         <motion.div
@@ -155,8 +166,21 @@ export default function StudentList() {
           </motion.div>
         )}
 
+        {/* Empty State */}
+        {!loading && !error && students.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center py-16"
+          >
+            <Users className="inline-block text-gray-400 mb-4" size={64} />
+            <p className="text-xl text-gray-600 mb-2">No students found</p>
+            <p className="text-gray-500">Check back later for student listings.</p>
+          </motion.div>
+        )}
+
         {/* Desktop Table View */}
-        {!loading && !error && (
+        {!loading && !error && filteredStudents.length > 0 && (
           <>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -207,7 +231,9 @@ export default function StudentList() {
                           <div className="text-lg font-semibold text-gray-900">{index + 1}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-lg font-semibold text-gray-900">{student.name}</div>
+                          <div className="text-lg font-semibold text-gray-900">
+                            {student.name || 'N/A'}
+                          </div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="text-gray-700">{formatDate(student.dob)}</div>
@@ -221,7 +247,7 @@ export default function StudentList() {
                         <td className="px-6 py-4">
                           <img
                             src={student.avatar || DUMMY_IMAGES.PLACEHOLDER}
-                            alt={student.name}
+                            alt={student.name || 'Student'}
                             className="w-16 h-16 rounded-full object-cover border-2 border-asha-green shadow-md"
                             onError={e => {
                               e.target.src = DUMMY_IMAGES.PLACEHOLDER
@@ -236,71 +262,75 @@ export default function StudentList() {
             </motion.div>
 
             {/* Mobile Card View */}
-            <div className="md:hidden space-y-4">
-              {filteredStudents.map((student, index) => (
-                <motion.div
-                  key={student.id || student.studentId}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="text-sm text-gray-500 mb-1">S.No: {index + 1}</div>
-                      <h3 className="text-xl font-bold text-gray-900">{student.name}</h3>
+            {!loading && !error && filteredStudents.length > 0 && (
+              <div className="md:hidden space-y-4">
+                {filteredStudents.map((student, index) => (
+                  <motion.div
+                    key={student.id || student.studentId}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <div className="text-sm text-gray-500 mb-1">S.No: {index + 1}</div>
+                        <h3 className="text-xl font-bold text-gray-900">{student.name || 'N/A'}</h3>
+                      </div>
+                      <img
+                        src={student.avatar || DUMMY_IMAGES.PLACEHOLDER}
+                        alt={student.name || 'Student'}
+                        className="w-20 h-20 rounded-full object-cover border-2 border-asha-green shadow-md ml-4"
+                        onError={e => {
+                          e.target.src = DUMMY_IMAGES.PLACEHOLDER
+                        }}
+                      />
                     </div>
-                    <img
-                      src={student.avatar || DUMMY_IMAGES.PLACEHOLDER}
-                      alt={student.name}
-                      className="w-20 h-20 rounded-full object-cover border-2 border-asha-green shadow-md ml-4"
-                      onError={e => {
-                        e.target.src = DUMMY_IMAGES.PLACEHOLDER
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2 border-t pt-4">
-                    <div className="flex items-center text-gray-700">
-                      <Calendar className="mr-2 text-asha-green" size={18} />
-                      <span className="font-medium">DOB:</span>
-                      <span className="ml-2">{formatDate(student.dob)}</span>
+                    <div className="space-y-2 border-t pt-4">
+                      <div className="flex items-center text-gray-700">
+                        <Calendar className="mr-2 text-asha-green" size={18} />
+                        <span className="font-medium">DOB:</span>
+                        <span className="ml-2">{formatDate(student.dob)}</span>
+                      </div>
+                      <div className="flex items-center text-gray-700">
+                        <Users className="mr-2 text-asha-green" size={18} />
+                        <span className="font-medium">Age:</span>
+                        <span className="ml-2">{student.age || 0} years</span>
+                      </div>
+                      <div className="flex items-center text-gray-700">
+                        <UserPlus className="mr-2 text-asha-pink" size={18} />
+                        <span className="font-medium">Joined:</span>
+                        <span className="ml-2">{formatDate(student.joiningDate)}</span>
+                      </div>
                     </div>
-                    <div className="flex items-center text-gray-700">
-                      <Users className="mr-2 text-asha-green" size={18} />
-                      <span className="font-medium">Age:</span>
-                      <span className="ml-2">{student.age || 0} years</span>
-                    </div>
-                    <div className="flex items-center text-gray-700">
-                      <UserPlus className="mr-2 text-asha-pink" size={18} />
-                      <span className="font-medium">Joined:</span>
-                      <span className="ml-2">{formatDate(student.joiningDate)}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
 
             {/* Student Count */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mt-8 text-center text-gray-600"
-            >
-              <p className="text-lg">
-                {selectedYear === 'all' ? (
-                  <>
-                    Total Students:{' '}
-                    <span className="font-bold text-asha-green">{students.length}</span>
-                  </>
-                ) : (
-                  <>
-                    Students from {selectedYear}:{' '}
-                    <span className="font-bold text-asha-green">{filteredStudents.length}</span>
-                  </>
-                )}
-              </p>
-            </motion.div>
+            {!loading && !error && students.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8 text-center text-gray-600"
+              >
+                <p className="text-lg">
+                  {selectedYear === 'all' ? (
+                    <>
+                      Total Students:{' '}
+                      <span className="font-bold text-asha-green">{students.length}</span>
+                    </>
+                  ) : (
+                    <>
+                      Students from {selectedYear}:{' '}
+                      <span className="font-bold text-asha-green">{filteredStudents.length}</span>
+                    </>
+                  )}
+                </p>
+              </motion.div>
+            )}
           </>
         )}
       </div>
