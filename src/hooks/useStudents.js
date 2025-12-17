@@ -53,7 +53,7 @@ export function useStudents(adminToken) {
         headers.Authorization = `Bearer ${adminToken}`
       }
 
-      const response = await axios.patch(`${API_BASE_URL}/students/${studentId}`, data, {
+      const response = await axios.put(`${API_BASE_URL}/students/${studentId}`, data, {
         headers,
       })
       return response.data

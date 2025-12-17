@@ -55,7 +55,14 @@ export default function AdminDashboard() {
     updateGalleryItem,
     uploadGalleryItem,
   } = useGallery(adminToken)
-  const { students, loading: studentsLoading, fetchStudents, deleteStudent, updateStudent, createStudent } = useStudents(adminToken)
+  const {
+    students,
+    loading: studentsLoading,
+    fetchStudents,
+    deleteStudent,
+    updateStudent,
+    createStudent,
+  } = useStudents(adminToken)
   const {
     imagePreview,
     isDragging,
@@ -208,10 +215,10 @@ export default function AdminDashboard() {
     try {
       const formDataToSend = new FormData()
       formDataToSend.append('name', studentFormData.name)
-      formDataToSend.append('dateOfBirth', studentFormData.dateOfBirth)
+      formDataToSend.append('dob', studentFormData.dateOfBirth)
       formDataToSend.append('joiningDate', studentFormData.joiningDate)
       if (studentFormData.photo) {
-        formDataToSend.append('photo', studentFormData.photo)
+        formDataToSend.append('avatar', studentFormData.photo)
       }
 
       console.log('Sending student data to API...')
@@ -259,15 +266,46 @@ export default function AdminDashboard() {
     }
   }
 
+  // Helper function to convert DD/MM/YYYY to YYYY-MM-DD for date inputs
+  const convertToDateInputFormat = dateString => {
+    if (!dateString) return ''
+    // If already in YYYY-MM-DD format, return as is
+    if (dateString.includes('-') && dateString.length === 10) {
+      return dateString
+    }
+    // If in DD/MM/YYYY format, convert to YYYY-MM-DD
+    if (dateString.includes('/')) {
+      const parts = dateString.split('/')
+      if (parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}` // YYYY-MM-DD
+      }
+    }
+    // Otherwise, try to parse as date
+    try {
+      const date = new Date(dateString)
+      if (!isNaN(date.getTime())) {
+        return date.toISOString().split('T')[0]
+      }
+    } catch (e) {
+      console.error('Error parsing date:', e)
+    }
+    return ''
+  }
+
   const handleEditStudent = student => {
     setEditingStudent(student)
+    // Handle both old and new API field names (dob/dateOfBirth, avatar/photo)
+    const dob = student.dob || student.dateOfBirth || ''
+    const joiningDate = student.joiningDate || ''
+    const avatar = student.avatar || student.photo || null
+
     setStudentFormData({
       name: student.name || '',
-      dateOfBirth: student.dateOfBirth || '',
-      joiningDate: student.joiningDate || '',
+      dateOfBirth: convertToDateInputFormat(dob),
+      joiningDate: convertToDateInputFormat(joiningDate),
       photo: null,
     })
-    setStudentPreview(student.photo || null)
+    setStudentPreview(avatar)
     setView('student-add')
   }
 
@@ -333,7 +371,8 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error('Error deleting:', err)
       const errorMessage =
-        err.response?.data?.message || `Failed to delete ${view.includes('student') ? 'student' : 'gallery item'}. Please try again.`
+        err.response?.data?.message ||
+        `Failed to delete ${view.includes('student') ? 'student' : 'gallery item'}. Please try again.`
       setError(errorMessage)
       showError(errorMessage)
     } finally {
@@ -532,7 +571,10 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex-1 max-w-md">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                    <Search
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      size={20}
+                    />
                     <input
                       type="text"
                       placeholder="Search students by name..."
@@ -542,7 +584,9 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <p className="text-gray-600 text-sm mt-2">
-                    {filteredStudents.length} {filteredStudents.length === 1 ? 'student' : 'students'} {searchQuery && 'found'}
+                    {filteredStudents.length}{' '}
+                    {filteredStudents.length === 1 ? 'student' : 'students'}{' '}
+                    {searchQuery && 'found'}
                   </p>
                 </div>
                 <button

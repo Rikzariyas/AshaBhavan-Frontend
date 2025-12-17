@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Users, Calendar, UserPlus, Loader2 } from 'lucide-react'
 import { DUMMY_DATA, DUMMY_IMAGES, API_BASE_URL } from '../constants'
@@ -8,6 +8,7 @@ export default function StudentList() {
   const [students, setStudents] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [selectedYear, setSelectedYear] = useState('all')
 
   useEffect(() => {
     fetchStudents()
@@ -20,7 +21,7 @@ export default function StudentList() {
       // Try to fetch from API
       const response = await axios.get(`${API_BASE_URL}/students`)
       console.log('Student API response:', response.data)
-      
+
       if (response.data.success && response.data.data && response.data.data.length > 0) {
         // Use API data if available
         console.log('Using API student data:', response.data.data)
@@ -40,24 +41,45 @@ export default function StudentList() {
     }
   }
 
+  // Extract available years from joining dates
+  const availableYears = useMemo(() => {
+    const years = new Set()
+    students.forEach(student => {
+      if (student.joiningDate) {
+        // Parse DD/MM/YYYY format to get year
+        const parts = student.joiningDate.split('/')
+        if (parts.length === 3) {
+          years.add(parts[2]) // Year is the third part
+        }
+      }
+    })
+    return Array.from(years).sort((a, b) => b.localeCompare(a)) // Sort descending
+  }, [students])
+
+  // Filter students by selected year
+  const filteredStudents = useMemo(() => {
+    if (selectedYear === 'all') {
+      return students
+    }
+    return students.filter(student => {
+      if (!student.joiningDate) return false
+      const parts = student.joiningDate.split('/')
+      return parts.length === 3 && parts[2] === selectedYear
+    })
+  }, [students, selectedYear])
+
   const formatDate = dateString => {
+    // If date is already formatted as DD/MM/YYYY, return as is
+    if (dateString && dateString.includes('/')) {
+      return dateString
+    }
+    // Otherwise, parse and format
     const date = new Date(dateString)
     return date.toLocaleDateString('en-GB', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     })
-  }
-
-  const calculateAge = dateString => {
-    const birthDate = new Date(dateString)
-    const today = new Date()
-    let age = today.getFullYear() - birthDate.getFullYear()
-    const monthDiff = today.getMonth() - birthDate.getMonth()
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--
-    }
-    return age
   }
 
   return (
@@ -97,6 +119,40 @@ export default function StudentList() {
               </button>
             </div>
           </div>
+        )}
+
+        {/* Year Filter Tabs */}
+        {!loading && !error && students.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-6 flex flex-wrap gap-3 justify-center"
+          >
+            <button
+              onClick={() => setSelectedYear('all')}
+              className={`px-6 py-2 rounded-lg font-medium transition-all ${
+                selectedYear === 'all'
+                  ? 'bg-asha-green text-white shadow-md'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+              }`}
+            >
+              All Students
+            </button>
+            {availableYears.map(year => (
+              <button
+                key={year}
+                onClick={() => setSelectedYear(year)}
+                className={`px-6 py-2 rounded-lg font-medium transition-all ${
+                  selectedYear === year
+                    ? 'bg-asha-green text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                }`}
+              >
+                {year}
+              </button>
+            ))}
+          </motion.div>
         )}
 
         {/* Desktop Table View */}
@@ -139,9 +195,9 @@ export default function StudentList() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {students.map((student, index) => (
+                    {filteredStudents.map((student, index) => (
                       <motion.tr
-                        key={student.id}
+                        key={student.id || student.studentId}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
@@ -154,17 +210,17 @@ export default function StudentList() {
                           <div className="text-lg font-semibold text-gray-900">{student.name}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-gray-700">{formatDate(student.dateOfBirth)}</div>
+                          <div className="text-gray-700">{formatDate(student.dob)}</div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-gray-700">{calculateAge(student.dateOfBirth)} years</div>
+                          <div className="text-gray-700">{student.age || 0} years</div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="text-gray-700">{formatDate(student.joiningDate)}</div>
                         </td>
                         <td className="px-6 py-4">
                           <img
-                            src={student.photo || DUMMY_IMAGES.PLACEHOLDER}
+                            src={student.avatar || DUMMY_IMAGES.PLACEHOLDER}
                             alt={student.name}
                             className="w-16 h-16 rounded-full object-cover border-2 border-asha-green shadow-md"
                             onError={e => {
@@ -181,9 +237,9 @@ export default function StudentList() {
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
-              {students.map((student, index) => (
+              {filteredStudents.map((student, index) => (
                 <motion.div
-                  key={student.id}
+                  key={student.id || student.studentId}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -195,7 +251,7 @@ export default function StudentList() {
                       <h3 className="text-xl font-bold text-gray-900">{student.name}</h3>
                     </div>
                     <img
-                      src={student.photo || DUMMY_IMAGES.PLACEHOLDER}
+                      src={student.avatar || DUMMY_IMAGES.PLACEHOLDER}
                       alt={student.name}
                       className="w-20 h-20 rounded-full object-cover border-2 border-asha-green shadow-md ml-4"
                       onError={e => {
@@ -207,12 +263,12 @@ export default function StudentList() {
                     <div className="flex items-center text-gray-700">
                       <Calendar className="mr-2 text-asha-green" size={18} />
                       <span className="font-medium">DOB:</span>
-                      <span className="ml-2">{formatDate(student.dateOfBirth)}</span>
+                      <span className="ml-2">{formatDate(student.dob)}</span>
                     </div>
                     <div className="flex items-center text-gray-700">
                       <Users className="mr-2 text-asha-green" size={18} />
                       <span className="font-medium">Age:</span>
-                      <span className="ml-2">{calculateAge(student.dateOfBirth)} years</span>
+                      <span className="ml-2">{student.age || 0} years</span>
                     </div>
                     <div className="flex items-center text-gray-700">
                       <UserPlus className="mr-2 text-asha-pink" size={18} />
@@ -232,7 +288,17 @@ export default function StudentList() {
               className="mt-8 text-center text-gray-600"
             >
               <p className="text-lg">
-                Total Students: <span className="font-bold text-asha-green">{students.length}</span>
+                {selectedYear === 'all' ? (
+                  <>
+                    Total Students:{' '}
+                    <span className="font-bold text-asha-green">{students.length}</span>
+                  </>
+                ) : (
+                  <>
+                    Students from {selectedYear}:{' '}
+                    <span className="font-bold text-asha-green">{filteredStudents.length}</span>
+                  </>
+                )}
               </p>
             </motion.div>
           </>

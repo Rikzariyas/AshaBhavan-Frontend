@@ -2,18 +2,12 @@ import { motion } from 'framer-motion'
 import { Edit, Trash2, Calendar, UserPlus } from 'lucide-react'
 
 export default function StudentCard({ student, onEdit, onDelete, index }) {
-  const calculateAge = dateString => {
-    const birthDate = new Date(dateString)
-    const today = new Date()
-    let age = today.getFullYear() - birthDate.getFullYear()
-    const monthDiff = today.getMonth() - birthDate.getMonth()
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--
-    }
-    return age
-  }
-
   const formatDate = dateString => {
+    // If date is already formatted as DD/MM/YYYY, return as is
+    if (dateString && dateString.includes('/')) {
+      return dateString
+    }
+    // Otherwise, parse and format
     const date = new Date(dateString)
     return date.toLocaleDateString('en-GB', {
       day: '2-digit',
@@ -30,7 +24,7 @@ export default function StudentCard({ student, onEdit, onDelete, index }) {
     >
       <div className="relative aspect-square bg-gray-100 overflow-hidden">
         <img
-          src={student.photo || '/images/placeholder.jpg'}
+          src={student.avatar || student.photo || '/images/placeholder.jpg'}
           alt={student.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           onError={e => {
@@ -49,11 +43,11 @@ export default function StudentCard({ student, onEdit, onDelete, index }) {
           <div className="flex items-center text-gray-600">
             <Calendar className="mr-2 text-blue-600" size={16} />
             <span className="font-medium">DOB:</span>
-            <span className="ml-2">{formatDate(student.dateOfBirth)}</span>
+            <span className="ml-2">{formatDate(student.dob || student.dateOfBirth)}</span>
           </div>
           <div className="flex items-center text-gray-600">
             <span className="font-medium ml-6">Age:</span>
-            <span className="ml-2">{calculateAge(student.dateOfBirth)} years</span>
+            <span className="ml-2">{student.age || 0} years</span>
           </div>
           <div className="flex items-center text-gray-600">
             <UserPlus className="mr-2 text-green-600" size={16} />
