@@ -334,7 +334,7 @@ export default function AdminDashboard() {
       image: null,
     })
     setPreview(item.url || null)
-    setView('add')
+    setView('gallery-add')
   }
 
   const handleDelete = item => {

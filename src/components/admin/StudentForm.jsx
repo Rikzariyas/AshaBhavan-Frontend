@@ -44,32 +44,35 @@ export default function StudentForm({
           />
         </div>
 
-        {/* Date of Birth Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Date of Birth <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            value={formData.dateOfBirth}
-            onChange={e => onFormDataChange({ ...formData, dateOfBirth: e.target.value })}
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-          />
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Date of Birth Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Date of Birth <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              value={formData.dateOfBirth}
+              onChange={e => onFormDataChange({ ...formData, dateOfBirth: e.target.value })}
+              required
+              max={new Date().toISOString().split('T')[0]}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+            />
+          </div>
 
-        {/* Joining Date Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Joining Date <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="date"
-            value={formData.joiningDate}
-            onChange={e => onFormDataChange({ ...formData, joiningDate: e.target.value })}
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-          />
+          {/* Joining Date Input */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Joining Date <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="date"
+              value={formData.joiningDate}
+              onChange={e => onFormDataChange({ ...formData, joiningDate: e.target.value })}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+            />
+          </div>
         </div>
 
         {/* Photo Upload */}
