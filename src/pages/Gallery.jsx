@@ -6,6 +6,8 @@ import axios from 'axios'
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null)
+  const [visibleCount, setVisibleCount] = useState(6)
+
   const [activeTab, setActiveTab] = useState('all')
   const [galleryItems, setGalleryItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -16,6 +18,7 @@ export default function Gallery() {
     { id: 'studentWork', label: 'Student Work', icon: BookOpen },
     { id: 'programs', label: 'Programs', icon: Play },
     { id: 'photos', label: 'Photos', icon: ImageIcon },
+
   ]
 
   useEffect(() => {
@@ -61,9 +64,12 @@ export default function Gallery() {
               category: 'photos',
               title: item.title || 'Photo',
               id: item.id,
+              type: 'image',
             }))
           )
         }
+        
+
         
         setGalleryItems(allItems)
       }
@@ -99,9 +105,11 @@ export default function Gallery() {
              category: 'photos',
              title: 'Photo',
              id: `ph-${i}`,
+             type: 'image',
           }))
         )
       }
+
       setGalleryItems(dummyItems)
     } finally {
       setLoading(false)
@@ -133,10 +141,13 @@ export default function Gallery() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => {
+                  setActiveTab(tab.id)
+                  setVisibleCount(6)
+                }}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all ${
                   activeTab === tab.id
-                    ? 'bg-blue-600 text-white shadow-lg'
+                    ? 'bg-asha-pink text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -150,7 +161,7 @@ export default function Gallery() {
         {/* Loading State */}
         {loading && (
           <div className="text-center py-16">
-            <Loader2 className="inline-block animate-spin text-blue-600" size={48} />
+            <Loader2 className="inline-block animate-spin text-asha-pink" size={48} />
             <p className="mt-4 text-gray-600 text-lg">Loading gallery items...</p>
           </div>
         )}
@@ -181,46 +192,61 @@ export default function Gallery() {
                 </p>
               </div>
             ) : (
-              <motion.div
-                layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-              >
-                <AnimatePresence mode="wait">
-                  {filteredImages.map((item, index) => (
-                    <motion.div
-                      key={item.id || `${item.category}-${index}`}
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      whileHover={{ scale: 1.05 }}
-                      onClick={() => setSelectedImage(item.src)}
-                      className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
-                    >
-                      <img
-                        src={item.src || DUMMY_IMAGES.PLACEHOLDER}
-                        alt={item.title || `Gallery ${index + 1}`}
-                        className="w-full h-64 object-cover"
-                        loading="lazy"
-                        onError={e => {
-                          e.target.src = DUMMY_IMAGES.PLACEHOLDER
+              <>
+                <motion.div
+                  layout
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
+                >
+                  <AnimatePresence mode="wait">
+                    {filteredImages.slice(0, visibleCount).map((item, index) => (
+                      <motion.div
+                        key={item.id || `${item.category}-${index}`}
+                        layout
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        whileHover={{ scale: 1.05 }}
+                        onClick={() => {
+                          setSelectedImage(item.src)
                         }}
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                        <ImageIcon
-                          className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                          size={40}
+                        className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
+                      >
+                        <img
+                          src={item.src || DUMMY_IMAGES.PLACEHOLDER}
+                          alt={item.title || `Gallery ${index + 1}`}
+                          className="w-full h-64 object-cover"
+                          loading="lazy"
+                          onError={e => {
+                            e.target.src = DUMMY_IMAGES.PLACEHOLDER
+                          }}
                         />
-                      </div>
-                      {item.title && (
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                          <p className="text-white font-medium text-sm truncate">{item.title}</p>
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                          <ImageIcon
+                            className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                            size={40}
+                          />
                         </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </motion.div>
+                        {item.title && (
+                          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                            <p className="text-white font-medium text-sm truncate">{item.title}</p>
+                          </div>
+                        )}
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </motion.div>
+
+                {visibleCount < filteredImages.length && (
+                  <div className="text-center mt-8 mb-12">
+                    <button
+                      onClick={() => setVisibleCount(prev => prev + 6)}
+                      className="px-8 py-3 bg-asha-pink text-white rounded-full hover:bg-asha-pink-dark transition-colors shadow-lg font-medium"
+                    >
+                      View More
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}
@@ -254,6 +280,11 @@ export default function Gallery() {
               />
             </motion.div>
           )}
+        </AnimatePresence>
+
+        {/* Video Modal */}
+        <AnimatePresence>
+
         </AnimatePresence>
       </div>
     </div>

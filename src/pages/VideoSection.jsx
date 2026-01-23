@@ -48,7 +48,7 @@ export default function VideoSection() {
             className="w-full lg:w-1/2 flex flex-col justify-center"
           >
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Student Success Stories</h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
+            <p className="text-gray-600 text-lg leading-relaxed mb-6 text-justify">
               Discover the transformative journey of our students as they pursue excellence and
               achieve their dreams through our dedicated programs and mentorship. Watch how Asha
               Bhavan empowers young minds to reach their full potential.

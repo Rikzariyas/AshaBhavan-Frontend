@@ -60,7 +60,7 @@ export default function DirectorProfile() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-gray-600 leading-relaxed"
+              className="text-gray-600 leading-relaxed text-justify"
             >
               {displayHeadOfInstitute.description}
             </motion.p>
