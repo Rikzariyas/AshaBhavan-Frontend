@@ -126,7 +126,7 @@ export const DUMMY_DATA = {
   MANAGEMENT_TEAM: {
     groupPhoto: '/images/management-team.jpg',
     description:
-      "The managing  committee as the governing body (board of directors) is the Apex body responsible for the overall governance and strategic direction of asha Bhavan. Their role is collective and focus on ensuring the institution sustained ability to full fill it's mission.That term asha bhavan management generally refers to the administration and operation of the institution that provides shelter protection and services to the youngsters especially ladies above 18 who have special needs",
+      "The managing  committee as the governing body (board of directors) is the Apex body responsible for the overall governance and strategic direction of asha Bhavan. Their role is collective and focus on ensuring the institution sustained ability to full fill it's mission.That term asha bhavan management generally refers to the administration and operation of the institution that provides shelter protection and services to the youngsters especially ladies above 18 who have special needs.",
   },
 
   COURSES: [
